@@ -31,4 +31,13 @@ export default class App extends Vue {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+.buttons {
+  margin-top: 6em;
+}
+
+.buttons button {
+  padding: 10px;
+  margin-right: 20px;
+}
 </style>

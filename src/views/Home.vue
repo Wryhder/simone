@@ -29,13 +29,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.buttons {
-  margin-top: 6em;
-}
+<style>
 
-.buttons button {
-  padding: 10px;
-  margin-right: 20px;
-}
 </style>
