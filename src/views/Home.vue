@@ -8,7 +8,9 @@
       game scores recorded.
     </p>
     <div class="buttons">
-      <button @click="startGame" :to="{ name: 'Game Screen' }">Start New Game</button>
+      <button @click="startGame" :to="{ name: 'Game Screen' }">
+        Start New Game
+      </button>
       <button @click="resumeGame">Resume Saved Game</button>
     </div>
   </div>
