@@ -18,6 +18,6 @@ export default new Router({
       path: "/game-screen",
       name: "Game Screen",
       component: GameScreen
-    },
+    }
   ]
 });
