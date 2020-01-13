@@ -5,6 +5,7 @@
     </template>
     <div class="buttons">
       <button @click="loadNextLevel">Load Next Level</button>
+      <button @click="resetLevel">Reset</button>
     </div>
   </section>
 </template>
@@ -25,6 +26,9 @@ export default {
     loadNextLevel() {
       this.$store.commit("increment");
     },
+    reset() {
+      this.$store.commit("reset");
+    }
   },
   components: {
     Button
