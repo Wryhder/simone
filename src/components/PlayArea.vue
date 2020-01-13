@@ -5,6 +5,7 @@
     </template>
     <div class="buttons">
       <button @click="loadNextLevel">Load Next Level</button>
+      <button @click="replayCurrentLevel">Replay</button>
       <button @click="resetLevel">Reset</button>
     </div>
   </section>
