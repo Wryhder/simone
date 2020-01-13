@@ -18,7 +18,7 @@
 export default {
   methods: {
     startGame() {
-      this.$emit('start-game');
+      this.$emit("start-game");
     },
     resumeGame() {
       console.log("Loading saved game...");
