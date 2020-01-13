@@ -1,20 +1,25 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <GameScreen v-if="gameStarted" />
+    <Home v-else />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "./components/HelloWorld.vue";
+import { Component, Vue, Prop } from "vue-property-decorator";
+
+import Home from "./views/Home.vue";
+import GameScreen from "./views/GameScreen.vue";
 
 @Component({
   components: {
-    HelloWorld
+    Home,
+    GameScreen
   }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  @Prop({ default: false }) gameStarted!: boolean;
+}
 </script>
 
 <style>
