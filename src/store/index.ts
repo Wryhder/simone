@@ -9,7 +9,11 @@ export default new Vuex.Store({
     playerName: "",
     sessionScores: []
   },
-  mutations: {},
+  mutations: {
+    increment(state) {
+      state.numberOfButtonsForCurrentLevel++;
+    },
+  },
   actions: {},
   modules: {}
 });

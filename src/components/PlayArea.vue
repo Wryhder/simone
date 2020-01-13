@@ -3,11 +3,15 @@
     <template v-for="n in numberOfButtonsForCurrentLevel">
       <Button v-bind:key="n" @click="$emit('button-clicked')" />
     </template>
+    <div class="buttons">
+      <button @click="loadNextLevel">Load Next Level</button>
+    </div>
   </section>
 </template>
 
-<script lang="ts">
+<script>
 import { mapState } from "vuex";
+
 import Button from "./Button.vue";
 
 export default {
@@ -16,6 +20,11 @@ export default {
     ...mapState([
       "numberOfButtonsForCurrentLevel"
     ])
+  },
+  methods: {
+    loadNextLevel() {
+      this.$store.commit("increment");
+    },
   },
   components: {
     Button
