@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <GameScreen v-if="gameStarted" />
-    <Home v-else v-on:start-game="gameStarted = true"/>
+    <Home v-else v-on:start-game="gameStarted = true" />
   </div>
 </template>
 
