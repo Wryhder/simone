@@ -7,16 +7,19 @@
 </template>
 
 <script lang="ts">
+import { mapState } from "vuex";
 import Button from "./Button.vue";
 
 export default {
   name: "PlayArea",
-  data() {
-    return {}
+  computed: {
+    ...mapState([
+      "numberOfButtonsForCurrentLevel"
+    ])
   },
   components: {
     Button
-  },
+  }
 };
 </script>
 
