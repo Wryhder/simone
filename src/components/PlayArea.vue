@@ -1,8 +1,11 @@
 <template>
   <section id="play-area">
-    <template v-for="n in numberOfButtonsForCurrentLevel">
-      <Button v-bind:key="n" @click="$emit('button-clicked')" />
-    </template>
+    <Button
+      v-for="n in numberOfButtonsForCurrentLevel"
+      v-bind:key="n"
+      @click="$emit('button-clicked')"
+    />
+
     <div class="buttons">
       <button @click="loadNextLevel">Load Next Level</button>
       <button @click="replayCurrentLevel">Replay</button>
