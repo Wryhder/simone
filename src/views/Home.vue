@@ -3,7 +3,7 @@
     <h1>Simone</h1>
     <p>
       Welcome to the Sybil System grading portal! <br />
-      Find out your criminal coefficient with fun games. Your final score will be calculated as the overall average of all scores recorded.
+      Find out your criminal coefficient with the game of Simone. Your final score will be calculated as the overall average of all scores recorded.
     </p>
     <div class="buttons">
       <button @click="startGame" :to="{ name: 'Game Screen' }">

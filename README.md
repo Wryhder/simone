@@ -1,4 +1,4 @@
-# simon
+# Simone
 
 ## Project setup
 ```
