@@ -29,6 +29,7 @@ export default {
 
 <style scoped>
  @import url('https://fonts.googleapis.com/css?family=Audiowide&display=swap');
+ @import url('https://fonts.googleapis.com/css?family=Tomorrow&display=swap');
 
 #home {
   height: 100%;
@@ -52,6 +53,7 @@ p {
   width: 60%;
   margin: 5em auto;
   font-size: 1.5em;
+  font-family: 'Tomorrow', sans-serif;
   color: white;
   background-color: black;
   padding: 1.5em;
@@ -68,6 +70,7 @@ p {
   color: black;
   background-color: navajowhite;
   font-size: 1em;
+	font-family: 'Audiowide', cursive;
 }
 
 button span {
