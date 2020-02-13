@@ -1,10 +1,12 @@
 <template>
   <section id="play-area">
+    <transition-group>
     <Button
       v-for="n in numberOfButtonsForCurrentLevel"
-      v-bind:key="n"
+        :key="n"
       @click="$emit('button-clicked')"
     />
+    </transition-group>
 
     <div class="buttons">
       <button @click="loadNextLevel">Load Next Level</button>
@@ -42,9 +44,11 @@ export default {
 
 <style>
 #play-area {
-  width: 700px;
-  margin-top: 2em;
+  width: 100%;
+  margin: 5em 0 2em 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
 }
 </style>

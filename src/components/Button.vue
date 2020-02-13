@@ -8,7 +8,7 @@ export default {};
 
 <style>
 div.button {
-  width: 100px;
+  width: 15em;
   height: 60px;
   background-color: indianred;
   margin: 0 0 10px 0;
