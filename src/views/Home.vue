@@ -17,7 +17,8 @@ export default {
     return {
       aText: [
         "Welcome to the Sybil System grading portal!", 
-        "Find out your criminal coefficient with the game of Simone. Your final score will be calculated as the overall average of all scores recorded."
+        "Find out your criminal coefficient with the game of Simone.",
+        "Your final score will be calculated as the overall average of all scores recorded."
       ],
       iSpeed: 100, // time delay of print out
       iIndex: 0, // start printing array at this posision
