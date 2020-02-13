@@ -1,10 +1,7 @@
 <template>
   <div id="home">
     <h1>Simone</h1>
-    <p>
-      Welcome to the Sybil System grading portal! <br />
-      Find out your criminal coefficient with the game of Simone. Your final score will be calculated as the overall average of all scores recorded.
-    </p>
+    <p id="typed-text"></p>
     <div class="buttons">
       <button @click="startGame" :to="{ name: 'Game Screen' }">
         Start New Game
@@ -16,13 +13,54 @@
 
 <script>
 export default {
+  data() {
+    return {
+      aText: [
+        "Welcome to the Sybil System grading portal!", 
+        "Find out your criminal coefficient with the game of Simone. Your final score will be calculated as the overall average of all scores recorded."
+      ],
+      iSpeed: 100, // time delay of print out
+      iIndex: 0, // start printing array at this posision
+      iArrLength: null, // the length of the text array
+      iScrollAt: 20, // start scrolling up at this many lines
+  
+      iTextPos: 0, // initialise text position
+      sContents: '', // initialise contents variable
+      iRow: null, // initialise current row
+
+    }
+  },
   methods: {
     startGame() {
       this.$emit("start-game");
     },
     resumeGame() {
       console.log("Loading saved game...");
+    },
+    typewriter() {
+      this.sContents =  ' ';
+      this.iRow = Math.max(0, this.iIndex - this.iScrollAt);
+      
+      while ( this.iRow < this.iIndex ) {
+        this.sContents += this.aText[this.iRow++] + '<br />';
+      }
+      this.destination.innerHTML = this.sContents + this.aText[this.iIndex].substring(0, this.iTextPos) + "_";
+      if ( this.iTextPos++ == this.iArrLength ) {
+        this.iTextPos = 0;
+        this.iIndex++;
+        if ( this.iIndex != this.aText.length ) {
+        this.iArrLength = this.aText[this.iIndex].length;
+        setTimeout(this.typewriter, 500);
+        }
+      } else {
+        setTimeout(this.typewriter, this.iSpeed);
+      }
     }
+  },
+  mounted() {
+    this.iArrLength = this.aText[0].length;
+    this.destination = document.getElementById("typed-text");
+    this.typewriter();
   }
 };
 </script>
