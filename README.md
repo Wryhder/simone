@@ -1,6 +1,8 @@
 # Simone
 
-## Project setup
+## Local Setup
+
+### Install dependencies
 ```
 npm install
 ```
