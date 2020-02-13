@@ -49,9 +49,9 @@ h1 {
 }
 
 p {
-  margin-top: 10em;
+  /* margin-top: 10em; */
   width: 60%;
-  margin: 5em auto;
+  margin: 5.8em auto 3.5em auto;
   font-size: 1.5em;
   font-family: 'Tomorrow', sans-serif;
   color: white;
