@@ -15,19 +15,19 @@
 export default {
   data() {
     return {
-      aText: [
+      typedText: [
         "Welcome to the Sybil System grading portal!", 
         "Find out your criminal coefficient with the game of Simone.",
         "Your final score will be calculated as the overall average of all scores recorded."
       ],
-      iSpeed: 100, // time delay of print out
-      iIndex: 0, // start printing array at this posision
-      iArrLength: null, // the length of the text array
-      iScrollAt: 20, // start scrolling up at this many lines
+      speed: 100, // time delay of print out
+      startIndex: 0, // start printing array at this posision
+      arrayLength: null, // the length of the text array
+      scrollAt: 20, // start scrolling up at this many lines
   
-      iTextPos: 0, // initialise text position
-      sContents: '', // initialise contents variable
-      iRow: null, // initialise current row
+      textPos: 0, // initialise text position
+      contents: '', // initialise contents variable
+      row: null, // initialise current row
 
     }
   },
@@ -39,27 +39,27 @@ export default {
       console.log("Loading saved game...");
     },
     typewriter() {
-      this.sContents =  ' ';
-      this.iRow = Math.max(0, this.iIndex - this.iScrollAt);
+      this.contents =  ' ';
+      this.row = Math.max(0, this.startIndex - this.scrollAt);
       
-      while ( this.iRow < this.iIndex ) {
-        this.sContents += this.aText[this.iRow++] + '<br />';
+      while ( this.row < this.startIndex ) {
+        this.contents += this.typedText[this.row++] + '<br />';
       }
-      this.destination.innerHTML = this.sContents + this.aText[this.iIndex].substring(0, this.iTextPos) + "_";
-      if ( this.iTextPos++ == this.iArrLength ) {
-        this.iTextPos = 0;
-        this.iIndex++;
-        if ( this.iIndex != this.aText.length ) {
-        this.iArrLength = this.aText[this.iIndex].length;
+      this.destination.innerHTML = this.contents + this.typedText[this.startIndex].substring(0, this.textPos) + "_";
+      if ( this.textPos++ == this.arrayLength ) {
+        this.textPos = 0;
+        this.startIndex++;
+        if ( this.startIndex != this.typedText.length ) {
+        this.arrayLength = this.typedText[this.startIndex].length;
         setTimeout(this.typewriter, 500);
         }
       } else {
-        setTimeout(this.typewriter, this.iSpeed);
+        setTimeout(this.typewriter, this.speed);
       }
     }
   },
   mounted() {
-    this.iArrLength = this.aText[0].length;
+    this.arrayLength = this.typedText[0].length;
     this.destination = document.getElementById("typed-text");
     this.typewriter();
   }
