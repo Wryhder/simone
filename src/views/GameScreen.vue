@@ -12,15 +12,12 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { Component, Vue, Prop } from "vue-property-decorator";
-import _ from "lodash";
 
 import PlayArea from "../components/PlayArea";
 import ScoreBoard from "../components/ScoreBoard";
 import StatusArea from "../components/StatusArea";
-
-Object.defineProperty(Vue.prototype, "$_", { value: _ });
 
 @Component({
   components: {
@@ -29,68 +26,7 @@ Object.defineProperty(Vue.prototype, "$_", { value: _ });
     StatusArea
   }
 })
-export default class GameScreen extends Vue {
-  async mounted() {
-    await this.$nextTick();
-    // TODO: animate buttons here
-  }
-
-  // @Prop({ default: false }) gameStarted!: boolean;
-  handleClick() {
-    if (isValid(clickTarget)) {
-      toggleClass(clickTarget);
-      addToArray(clickTarget);
-      // max number of buttons allowed in clickedButtons array = numberOfButtonsForCurrentLevel
-      if (clickedButtons.length === numberOfButtonsForCurrentLevel) {
-        checkForCorrectPattern();
-      }
-    }
-  }
-
-  animateButtons() {
-    let animationDelay = 0;
-    const shuffledButtons = _.shuffle(Array.from(buttonList));
-    for (const button of shuffledButtons) {
-      button.classList.toggle("heartbeat");
-      button.setAttribute(
-        "style",
-        `animation-delay: ${(animationDelay += 2)}s`
-      );
-    }
-  }
-
-  isValid(clickTarget) {
-    // For a click to be valid:
-    // 1. Target needs to be a button with class of "button"
-    // 3. The clickedButtons array must have less than the total number
-    //    of buttons for that level already in it
-    // 4. Target must not already be in the clickedButtons array
-    return (
-      clickTarget.classList.contains("button") &&
-      clickedButtons.length < numberOfButtonsForCurrentLevel &&
-      !clickedButtons.includes(clickTarget)
-    );
-  }
-
-  // indicate that a button has been clicked
-  toggleClass(button) {
-    button.classList.toggle("clicked");
-  }
-
-  // add a button to the clickedButtons array
-  addToArray(button) {
-    clickedButtons.push(button);
-  }
-
-  // empty the clickedButtons array
-  emptyArray() {
-    clickedButtons = [];
-  }
-
-  checkForCorrectPattern() {
-    console.log(clickedButtons);
-  }
-}
+export default class GameScreen extends Vue {}
 </script>
 
 <style>
