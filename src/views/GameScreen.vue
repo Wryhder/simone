@@ -30,14 +30,6 @@ export default class GameScreen extends Vue {}
 </script>
 
 <style>
-html,
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-}
-
 #gamescreen {
   background-image: url('../assets/psycho pass_gamescreen2.jpg');
   background-repeat: no-repeat;
