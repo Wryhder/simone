@@ -23,8 +23,19 @@ export default class App extends Vue {
 </script>
 
 <style>
+html {
+  height: 100vh;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+
 #app {
-  height: inherit;
+  height: 100vh;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

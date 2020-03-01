@@ -71,13 +71,14 @@ export default {
  @import url('https://fonts.googleapis.com/css?family=Tomorrow&display=swap');
 
 #home {
-  height: 100%;
+  min-height: 100vh;
   width: 100%;
   background-image: url('../assets/psycho-pass-full-1447619_homepage.jpg');
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: chocolate;
+  background-color: #d2691e;
   background-blend-mode: color-burn;
+  background-attachment: fixed;
 }
 
 h1 {
@@ -101,15 +102,36 @@ p {
 
 .buttons {
   margin-top: 6em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen and (min-width: 650px) {
+  .buttons {
+    /* display: block; */
+    flex-direction: row;
+    justify-content: center;
+    margin-right: 0;
+  }
+
+  .buttons button:first-of-type {
+    margin-right: 60px;
+  }
 }
 
 .buttons button {
   padding: 10px;
-  margin-right: 60px;
+  margin-bottom: 20px;
   color: black;
-  background-color: navajowhite;
   font-size: 1em;
 	font-family: 'Audiowide', cursive;
+  border: none;
+  box-shadow: 0px 10px 14px -7px #276873;
+  background: linear-gradient(to bottom, navajowhite 5%, #77a809 100%);
+  border-radius: 10px;
+  cursor: pointer;
+  width: fit-content;
 }
 
 button span {
