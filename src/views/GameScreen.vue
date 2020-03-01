@@ -1,13 +1,13 @@
 <template>
   <div id="gamescreen">
     <main>
-      <PlayArea v-on:button-clicked="handleClick" />
+      <PlayArea />
     </main>
     <aside>
       <ScoreBoard />
     </aside>
     <footer>
-      <StatusArea/>
+      <StatusArea />
     </footer>
   </div>
 </template>
@@ -58,39 +58,39 @@ main {
 
 @media screen and (min-width: 650px) {
   #gamescreen {
-  display: grid;
-  grid-gap: 20px;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-areas: 
-                "main main main aside"
-                "main main main aside"
-                "footer footer footer aside";
-  height: inherit;
-  color: white;
-}
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: 
+                  "main main main aside"
+                  "main main main aside"
+                  "footer footer footer aside";
+    height: inherit;
+    color: white;
+  }
 
-main {
-  grid-area: main;
-  height: 30em;
+  main {
+    grid-area: main;
+    height: 30em;
     margin-bottom: 0;
-}
+  }
 
-aside {
-  grid-area: aside;
-}
+  aside {
+    grid-area: aside;
+  }
 
-footer {
-  grid-area: footer;
-  height: 3em;
+  footer {
+    grid-area: footer;
+    height: 3em;
     border: 10px white inset;
-  background-color: black;
-  margin-bottom: -10px;
+    background-color: black;
+    margin-bottom: -10px;
     position: static;
-}
+  }
 
-aside {
-  height: 100%;
-  /* border: 1px red solid; */
-}
+  aside {
+    height: 100%;
+    /* border: 1px red solid; */
+  }
 }
 </style>
