@@ -99,6 +99,10 @@ export default class PlayArea extends Vue {
 #play-area {
   width: 100%;
   margin: 5em 0 2em 0;
+  /* display: flex; */
+}
+
+#play-area section:first-child {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -118,5 +122,9 @@ export default class PlayArea extends Vue {
   100% {
     transform: none;
   }
+}
+
+button {
+  font-size: 1em;
 }
 </style>

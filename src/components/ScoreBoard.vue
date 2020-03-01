@@ -4,14 +4,16 @@
       <h3>My Score History</h3>
       <div id="scores">
         <table>
-          <tr>
-            <td>Level 1</td>
-            <td>50</td>
-          </tr>
-          <tr>
-            <td>Level 2</td>
-            <td>120</td>
-          </tr>
+          <tbody>
+            <tr>
+              <td>Level 1</td>
+              <td>50</td>
+            </tr>
+            <tr>
+              <td>Level 2</td>
+              <td>120</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </section>
@@ -48,31 +50,30 @@ export default {
 </script>
 
 <style>
-#scoreboard {
-  height: 100%;
-}
-
 #scoreboard section {
-  height: 48.4%;
   background-color: black;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 80%;
+  margin: 0 auto;
+  padding: 2em 0;
+  border-radius: 10px;
+  box-shadow: 0px 20px 24px 0 #276873;
 }
 
 #scoreboard section:nth-child(1) {
   margin-bottom: 1em;
-  border-bottom-left-radius: 5px;
 }
 
 #scoreboard section:nth-child(2) {
-  border-top-left-radius: 5px;
+  margin-bottom: 5em;
 }
 
-#scoreboard section:nth-child(1) h3 {
-  margin-top: 0;
-}
-
-#scoreboard section:nth-child(1) h3,
+#scoreboard section:nth-child(1) h3
 #scoreboard section:nth-child(2) h3 {
-  padding-top: 0.8em;
+  margin-top: 0;
 }
 
 /* #scoreboard section:nth-child(1) td,
@@ -86,7 +87,8 @@ section div {
 
 table {
   border-collapse: collapse;
-  width: 100%;
+  width: 90%;
+  margin: auto;
 }
 
 thead {
@@ -100,5 +102,35 @@ td,
 th {
   border: 1px solid #dddddd;
   padding: 0.4em;
+}
+
+tbody tr {
+  /* background-color: white;
+  color: black; */
+}
+
+@media screen and (min-width: 650px) {
+  #scoreboard {
+    height: 100%;
+  }
+
+  #scoreboard section {
+    height: 48.4%;
+    width: 100%;
+    padding: 0;
+  }
+
+  #scoreboard section:nth-child(1) {
+    margin-bottom: 1em;
+    border-radius: 0 0 0 5px;
+  }
+
+  #scoreboard section:nth-child(2) {
+    border-radius: 5px 0 0 0;
+  }
+
+  table {
+    width: 100%;
+  }
 }
 </style>
