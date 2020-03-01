@@ -7,26 +7,13 @@ export default {};
 </script>
 
 <style>
-div.button {
+#simone-button {
   width: 15em;
   height: 60px;
-  background-color: indianred;
   margin: 0 0 10px 0;
-}
-
-.heartbeat {
-  animation: heartbeat 3s;
-}
-
-@keyframes heartbeat {
-  0% {
-    background-color: skyblue;
-  }
-  50% {
-    transform: perspective(500px) scale3d(2, 0.7, 0.2) translateZ(100px);
-  }
-  100% {
-    transform: none;
-  }
+  box-shadow: 0px 10px 14px -7px #276873;
+  background: linear-gradient(to bottom, white 5%, indianred 100%);
+  border-radius: 10px;
+  cursor: pointer;
 }
 </style>

@@ -50,5 +50,20 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+
+.heartbeat {
+  animation: heartbeat 3s;
+}
+
+@keyframes heartbeat {
+  0% {
+    background-color: skyblue;
+  }
+  50% {
+    transform: perspective(500px) scale3d(2, 0.7, 0.2) translateZ(100px);
+  }
+  100% {
+    transform: none;
+  }
 }
 </style>
