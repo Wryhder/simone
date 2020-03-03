@@ -69,7 +69,7 @@ export default class PlayArea extends Vue {
     }
   }
 
-  animateButtons(button, callback) {
+  animateButtons(callback) {
     let animationDelay = 0;
 
     for (const button of this.shuffledButtons) {
