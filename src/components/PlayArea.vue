@@ -2,9 +2,9 @@
   <section id="play-area">
       <transition-group tag="section">
     <Button
-      v-for="n in numberOfButtonsForCurrentLevel"
-        :key="n"
-      @click="$emit('button-clicked')"
+          v-for="(item, index) in numberOfButtonsForCurrentLevel"
+          :key="index"
+          v-bind:class="[buttonBackgroundColours[index % buttonBackgroundColours.length]]"
     />
     </transition-group>
 
@@ -34,8 +34,29 @@ Object.defineProperty(Vue.prototype, "$_", { value: _ });
   }
 })
 export default class PlayArea extends Vue {
+  buttonDeck;
+  buttonList;
+  shuffledButtons;
   clickedButtons: Array<EventTarget>;
+  buttonBackgroundColours: Array<String>;
 
+  created() {
+    this.buttonBackgroundColours = ["indianred", "blue", "purple", "green"];
+  }
+
+  async mounted() {
+    this.$nextTick();
+
+    this.buttonDeck = document.querySelector("#play-area section:first-of-type");
+    this.buttonList = document.querySelectorAll("#simone-button");
+    this.shuffledButtons = _.shuffle(Array.from(this.buttonList));
+
+    this.animateButtons();
+  }
+
+  attachListeners() {
+    this.buttonDeck.addEventListener('click', this.manageGamePlay);
+  }
 
   manageGamePlay() {
     if (this.isValid(clickTarget)) {
@@ -48,17 +69,24 @@ export default class PlayArea extends Vue {
     }
   }
 
-  animateButtons() {
+  animateButtons(button, callback) {
     let animationDelay = 0;
-    const buttonList = document.querySelectorAll("#simone-button");
-    const shuffledButtons = _.shuffle(Array.from(buttonList));
-    for (const button of shuffledButtons) {
+
+    for (const button of this.shuffledButtons) {
       button.classList.toggle("heartbeat");
       button.setAttribute(
         "style",
         `animation-delay: ${(animationDelay += 2)}s`
       );
     }
+    
+    if (typeof callback === 'function') callback();
+
+    // this.buttonDeck.addEventListener('animationend', () => {
+    //   this.attachListeners();
+    // });
+
+    // console.log(this.buttonBackgroundColours);
   }
 
   isValid(clickTarget) {
