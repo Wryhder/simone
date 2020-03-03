@@ -2,8 +2,11 @@
   <button id="simone-button"></button>
 </template>
 
-<script>
-export default {};
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
+@Component
+export default class Button extends Vue {}
 </script>
 
 <style>
