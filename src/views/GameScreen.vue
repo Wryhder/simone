@@ -40,6 +40,7 @@ export default class GameScreen extends Vue {}
   background-attachment: fixed;
   display: flex;
   flex-direction: column;
+  overflow-y: hidden;
 }
 
 footer {
@@ -59,13 +60,11 @@ main {
 @media screen and (min-width: 650px) {
   #gamescreen {
     display: grid;
-    grid-gap: 20px;
     grid-template-columns: repeat(4, 1fr);
     grid-template-areas: 
                   "main main main aside"
                   "main main main aside"
                   "footer footer footer aside";
-    height: inherit;
     color: white;
   }
 
@@ -84,13 +83,13 @@ main {
     height: 3em;
     border: 10px white inset;
     background-color: black;
-    margin-bottom: -10px;
     position: static;
+    width: calc(30rem + 10vw);
+    justify-self: center;
   }
 
   aside {
-    height: 100%;
-    /* border: 1px red solid; */
+    height: 100vh;
   }
 }
 </style>
