@@ -104,10 +104,6 @@ th {
   padding: 0.4em;
 }
 
-tbody tr {
-  /* background-color: white;
-  color: black; */
-}
 
 @media screen and (min-width: 650px) {
   #scoreboard {
