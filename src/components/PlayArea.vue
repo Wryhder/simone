@@ -1,6 +1,6 @@
 <template>
   <section id="play-area">
-    <transition-group>
+      <transition-group tag="section">
     <Button
       v-for="n in numberOfButtonsForCurrentLevel"
         :key="n"
