@@ -101,7 +101,7 @@ h1 {
 
 p {
   /* margin-top: 10em; */
-  width: 60%;
+  width: 80%;
   margin: 5.8em auto 3.5em auto;
   font-size: 1.5em;
   font-family: "Tomorrow", sans-serif;
@@ -119,6 +119,10 @@ p {
 }
 
 @media screen and (min-width: 650px) {
+  p {
+    width: 60%;
+  }
+  
   .buttons {
     /* display: block; */
     flex-direction: row;
