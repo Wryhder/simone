@@ -71,15 +71,9 @@ export default {
   margin-bottom: 5em;
 }
 
-#scoreboard section:nth-child(1) h3
-#scoreboard section:nth-child(2) h3 {
+#scoreboard section h3 {
   margin-top: 0;
 }
-
-/* #scoreboard section:nth-child(1) td,
-#scoreboard section:nth-child(1) th {
-  border: none;
-} */
 
 section div {
   padding: 0 1.5em;
@@ -103,7 +97,6 @@ th {
   border: 1px solid #dddddd;
   padding: 0.4em;
 }
-
 
 @media screen and (min-width: 650px) {
   #scoreboard {
