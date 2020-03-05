@@ -1,15 +1,13 @@
 <template>
   <div id="statusarea">
-      {score}
+    {score}
   </div>
 </template>
 
 <script>
 export default {
-    props: ["score"]
-}
+  props: ["score"]
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
