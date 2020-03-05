@@ -3,7 +3,7 @@
     <h1>Simone</h1>
     <p id="typed-text"></p>
     <div class="buttons">
-      <button @click="startGame" :to="{ name: 'Game Screen' }">
+      <button @click="$emit('start-game')" :to="{ name: 'Game Screen' }">
         Start New Game
       </button>
       <button @click="resumeGame">
@@ -20,7 +20,7 @@ export default {
   data() {
     return {
       typedText: [
-        "Welcome to the Sybil System grading portal!", 
+        "Welcome to the Sybil System grading portal!",
         "Find out your criminal coefficient with the game of Simone.",
         "Your final score will be calculated as the overall average of all scores recorded."
       ],
@@ -28,23 +28,20 @@ export default {
       startIndex: 0, // start printing array at this posision
       arrayLength: null, // the length of the text array
       scrollAt: 20, // start scrolling up at this many lines
-  
+
       textPos: 0, // initialise text position
       contents: "", // initialise contents variable
       row: null // initialise current row
     };
   },
   methods: {
-    startGame() {
-      this.$emit("start-game");
-    },
     resumeGame() {
       console.log("Loading saved game...");
     },
     typewriter() {
       this.contents = " ";
       this.row = Math.max(0, this.startIndex - this.scrollAt);
-      
+
       while (this.row < this.startIndex) {
         this.contents += this.typedText[this.row++] + "<br />";
       }
@@ -56,8 +53,8 @@ export default {
         this.textPos = 0;
         this.startIndex++;
         if (this.startIndex != this.typedText.length) {
-        this.arrayLength = this.typedText[this.startIndex].length;
-        setTimeout(this.typewriter, 500);
+          this.arrayLength = this.typedText[this.startIndex].length;
+          setTimeout(this.typewriter, 500);
         }
       } else {
         setTimeout(this.typewriter, this.speed);
