@@ -15,58 +15,69 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      typedText: [
-        "Welcome to the Sybil System grading portal!",
-        "Find out your criminal coefficient with the game of Simone.",
-        "Your final score will be calculated as the overall average of all scores recorded."
-      ],
-      speed: 100, // time delay of print out
-      startIndex: 0, // start printing array at this posision
-      arrayLength: null, // the length of the text array
-      scrollAt: 20, // start scrolling up at this many lines
+<script lang="ts">
+import { Component, Vue, Prop } from "vue-property-decorator";
 
-      textPos: 0, // initialise text position
-      contents: "", // initialise contents variable
-      row: null // initialise current row
-    };
-  },
-  methods: {
-    resumeGame() {
-      console.log("Loading saved game...");
-    },
-    typewriter() {
-      this.contents = " ";
-      this.row = Math.max(0, this.startIndex - this.scrollAt);
+@Component({})
+export default class Home extends Vue {
+  typedText;
+  speed;
+  startIndex;
+  arrayLength;
+  scrollAt;
+  textPos;
+  contents;
+  row;
 
-      while (this.row < this.startIndex) {
-        this.contents += this.typedText[this.row++] + "<br />";
-      }
-      this.destination.innerHTML =
-        this.contents +
-        this.typedText[this.startIndex].substring(0, this.textPos) +
-        "_";
-      if (this.textPos++ == this.arrayLength) {
-        this.textPos = 0;
-        this.startIndex++;
-        if (this.startIndex != this.typedText.length) {
-          this.arrayLength = this.typedText[this.startIndex].length;
-          setTimeout(this.typewriter, 500);
-        }
-      } else {
-        setTimeout(this.typewriter, this.speed);
-      }
-    }
-  },
+  created() {
+    this.typedText = [
+      "Welcome to the Sybil System grading portal!",
+      "Find out your criminal coefficient with the game of Simone.",
+      "Your final score will be calculated as the overall average of all scores recorded."
+    ];
+    this.speed = 100; // time delay of print out
+    this.startIndex = 0; // start printing array at this posision
+    this.arrayLength = null; // the length of the text array
+    this.scrollAt = 20; // start scrolling up at this many lines
+
+    this.textPos = 0; // initialise text position
+    this.contents = ""; // initialise contents variable
+    this.row = null; // initialise current row
+  }
+
   mounted() {
     this.arrayLength = this.typedText[0].length;
     this.destination = document.getElementById("typed-text");
     this.typewriter();
   }
-};
+
+  typewriter() {
+    this.contents = " ";
+    this.row = Math.max(0, this.startIndex - this.scrollAt);
+
+    while (this.row < this.startIndex) {
+      this.contents += this.typedText[this.row++] + "<br />";
+    }
+    this.destination.innerHTML =
+      this.contents +
+      this.typedText[this.startIndex].substring(0, this.textPos) +
+      "_";
+    if (this.textPos++ == this.arrayLength) {
+      this.textPos = 0;
+      this.startIndex++;
+      if (this.startIndex != this.typedText.length) {
+        this.arrayLength = this.typedText[this.startIndex].length;
+        setTimeout(this.typewriter, 500);
+      }
+    } else {
+      setTimeout(this.typewriter, this.speed);
+    }
+  }
+  
+  resumeGame() {
+    console.log("Loading saved game...");
+  }
+}
 </script>
 
 <style scoped>
