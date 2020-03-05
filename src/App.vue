@@ -34,6 +34,10 @@ body {
   min-height: 100vh;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 #app {
   height: 100vh;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
