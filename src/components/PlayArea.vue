@@ -38,7 +38,9 @@ Object.defineProperty(Vue.prototype, "$_", { value: _ });
 export default class PlayArea extends Vue {
   buttonDeck;
   buttonList;
-  shuffledButtons;
+  isGameOver: boolean;
+  playerPatternLength: number;
+  shuffledButtons: Array<HTMLButtonElement>;
   clickedButtons: Array<EventTarget>;
   buttonBackgroundColours: Array<String>;
 
@@ -54,27 +56,31 @@ export default class PlayArea extends Vue {
     );
     this.buttonList = document.querySelectorAll("#simone-button");
     this.shuffledButtons = _.shuffle(Array.from(this.buttonList));
+    this.playerPatternLength = 0;
+    this.isGameOver = false;
 
-    this.animateButtons();
+    this.animateButtons(this.attachListeners);
   }
 
   attachListeners() {
-    this.buttonDeck.addEventListener('click', this.manageGamePlay);
+    this.buttonDeck.addEventListener("click", this.manageGamePlay);
   }
 
   manageGamePlay() {
-    if (this.isValid(clickTarget)) {
-      this.toggleClass(clickTarget);
-      this.addToArray(clickTarget);
-      // max number of buttons allowed in clickedButtons array = numberOfButtonsForCurrentLevel
-      if (this.clickedButtons.length === this.numberOfButtonsForCurrentLevel) {
-        this.checkForCorrectPattern();
-    }
-    }
-  }
+    const clickTarget = event.target;
 
-  animateButtons(callback) {
+    if (!this.isValid(clickTarget)) {
+      console.log(clickTarget);
+      this.isGameOver = true;
+    }
+    }
+
+  animateButtons(callback?: CallableFunction) {
     let animationDelay = 0;
+    let self = this;
+    let lastAnimatedButton = this.shuffledButtons[
+      this.shuffledButtons.length - 1
+    ];
 
     for (const button of this.shuffledButtons) {
       button.classList.toggle("heartbeat");
@@ -84,45 +90,38 @@ export default class PlayArea extends Vue {
       );
     }
     
-    if (typeof callback === 'function') callback();
+    function handleAnimationEnd() {
+      for (const button of self.buttonList) {
+        button.classList.toggle("heartbeat");
+        button.removeAttribute("style");
+  }
 
-    // this.buttonDeck.addEventListener('animationend', () => {
-    //   this.attachListeners();
-    // });
+      lastAnimatedButton.removeEventListener(
+        "animationend",
+        handleAnimationEnd
+    );
 
-    // console.log(this.buttonBackgroundColours);
+      if (typeof callback === "function") callback();
+  }
+
+    lastAnimatedButton.addEventListener("animationend", handleAnimationEnd);
   }
 
   isValid(clickTarget) {
+    this.playerPatternLength += 1;
+
     // For a click to be valid:
-    // 1. Target needs to be a button with class of "button"
-    // 3. The clickedButtons array must have less than the total number
-    //    of buttons for that level already in it
-    // 4. Target must not already be in the clickedButtons array
+    // 1. Target needs to be a button with id of "simone-button"
+    // 2. Target's click order should match the button
+    //  in an equivalent position in the shuffledButtons array
+    // e.g target === shuffledButtons[targetClickOrder]
+    // 3. TODO:
     return (
-      clickTarget.classList.contains("button") &&
-      clickedButtons.length < numberOfButtonsForCurrentLevel &&
-      !clickedButtons.includes(clickTarget)
+      clickTarget.id === "simone-button" &&
+      // Substract 1 from this.playerPatternLength since array indexing starts from 0
+      clickTarget === this.shuffledButtons[this.playerPatternLength - 1] &&
+      this.buttonList.length <= this.numberOfButtonsForCurrentLevel
     );
-  }
-
-  // indicate that a button has been clicked
-  toggleClass(button) {
-    button.classList.toggle("clicked");
-  }
-
-  // add a button to the clickedButtons array
-  addToArray(button) {
-    clickedButtons.push(button);
-  }
-
-  // empty the clickedButtons array
-  emptyArray() {
-    clickedButtons = [];
-  }
-
-  checkForCorrectPattern() {
-    console.log(clickedButtons);
   }
   }
 </script>
