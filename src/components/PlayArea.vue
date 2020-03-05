@@ -42,11 +42,7 @@ export default class PlayArea extends Vue {
   playerPatternLength: number;
   shuffledButtons: Array<HTMLButtonElement>;
   clickedButtons: Array<EventTarget>;
-  buttonBackgroundColours: Array<String>;
-
-  created() {
-    this.buttonBackgroundColours = ["indianred", "blue", "purple", "green"];
-  }
+  buttonBackgroundColours: Array<String> = ["indianred", "blue", "purple", "green"];
 
   async mounted() {
     this.$nextTick();

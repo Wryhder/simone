@@ -20,27 +20,19 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({})
 export default class Home extends Vue {
-  typedText: Array<string>;
-  speed: number; // time delay of print out
-  startIndex: number; // start printing array at this position
-  arrayLength: number; // the length of the text array
-  scrollAt: number; // start scrolling up at this many lines
-  textPos: number;
-  contents: string;
-  row: number; // initialise current row
-  destination: HTMLElement | null;
-
-  created() {
-    this.typedText = [
+  typedText: Array<string> = [
       "Welcome to the Sybil System grading portal!",
       "Find out your criminal coefficient with the game of Simone.",
       "Your final score will be calculated as the overall average of all scores recorded."
     ];
-    this.speed = 100; 
-    this.startIndex = 0; 
-    this.scrollAt = 20; 
-    this.textPos = 0; // initialise text position
-  }
+  speed: number = 100; // time delay of print out
+  startIndex: number = 0; // start printing array at this position
+  arrayLength: number; // the length of the text array
+  scrollAt: number = 20; // start scrolling up at this many lines
+  textPos: number = 0; // initialise text position
+  contents: string;
+  row: number; // initialise current row
+  destination: HTMLElement | null;
 
   mounted() {
     this.arrayLength = this.typedText[0].length;
@@ -64,7 +56,7 @@ export default class Home extends Vue {
     if (this.textPos++ == this.arrayLength) {
       this.textPos = 0;
       this.startIndex++;
-      
+
       if (this.startIndex != this.typedText.length) {
         this.arrayLength = this.typedText[this.startIndex].length;
         setTimeout(this.typewriter, 500);

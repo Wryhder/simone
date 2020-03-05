@@ -18,11 +18,7 @@ import GameScreen from "./views/GameScreen.vue";
   }
 })
 export default class App extends Vue {
-  gameStarted: boolean;
-
-  created() {
-    this.gameStarted = false;
-  }
+  gameStarted: boolean = false;
 
   startGame() {
     this.gameStarted = true;
