@@ -71,7 +71,6 @@ main {
   main {
     grid-area: main;
     height: 30em;
-    /* margin-bottom: calc(3em + 10px); */
   }
 
   aside {
