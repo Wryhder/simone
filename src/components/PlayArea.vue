@@ -36,8 +36,8 @@ Object.defineProperty(Vue.prototype, "$_", { value: _ });
   }
 })
 export default class PlayArea extends Vue {
-  buttonDeck;
-  buttonList;
+  buttonDeck: HTMLParagraphElement | null;
+  buttonList: NodeListOf<Element>;
   isGameOver: boolean;
   playerPatternLength: number;
   shuffledButtons: Array<HTMLButtonElement>;
@@ -67,7 +67,7 @@ export default class PlayArea extends Vue {
   }
 
   manageGamePlay() {
-    const clickTarget = event.target;
+    const clickTarget: EventTarget | null = event.target;
 
     if (!this.isValid(clickTarget)) {
       console.log(clickTarget);
@@ -107,7 +107,7 @@ export default class PlayArea extends Vue {
     lastAnimatedButton.addEventListener("animationend", handleAnimationEnd);
   }
 
-  isValid(clickTarget) {
+  isValid(clickTarget: EventTarget | null) {
     this.playerPatternLength += 1;
 
     // For a click to be valid:
