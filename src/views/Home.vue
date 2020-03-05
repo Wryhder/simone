@@ -55,13 +55,16 @@ export default class Home extends Vue {
     while (this.row < this.startIndex) {
       this.contents += this.typedText[this.row++] + "<br />";
     }
+
     this.destination.innerHTML =
       this.contents +
       this.typedText[this.startIndex].substring(0, this.textPos) +
       "_";
+
     if (this.textPos++ == this.arrayLength) {
       this.textPos = 0;
       this.startIndex++;
+      
       if (this.startIndex != this.typedText.length) {
         this.arrayLength = this.typedText[this.startIndex].length;
         setTimeout(this.typewriter, 500);
