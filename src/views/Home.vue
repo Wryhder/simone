@@ -100,7 +100,6 @@ h1 {
 }
 
 p {
-  /* margin-top: 10em; */
   width: 80%;
   margin: 5.8em auto 3.5em auto;
   font-size: 1.5em;
@@ -124,7 +123,6 @@ p {
   }
   
   .buttons {
-    /* display: block; */
     flex-direction: row;
     justify-content: center;
     margin-right: 0;
