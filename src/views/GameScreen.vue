@@ -32,7 +32,7 @@ export default class GameScreen extends Vue {}
 <style>
 #gamescreen {
   min-height: 100vh;
-  background-image: url('../assets/psycho pass_gamescreen2.jpg');
+  background-image: url("../assets/psycho pass_gamescreen2.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-color: chocolate;
@@ -44,13 +44,13 @@ export default class GameScreen extends Vue {}
 }
 
 footer {
-  height: 3em;
   border: 10px white inset;
   background-color: black;
   position: fixed;
   right: 0;
   left: 0;
   bottom: 0;
+  padding: 0.5rem;
 }
 
 main {
@@ -61,17 +61,17 @@ main {
   #gamescreen {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-areas: 
-                  "main main main aside"
-                  "main main main aside"
-                  "footer footer footer aside";
+    grid-template-areas:
+      "main main main aside"
+      "main main main aside"
+      "footer footer footer aside";
     color: white;
   }
 
   main {
     grid-area: main;
     height: 30em;
-    margin-bottom: 0;
+    /* margin-bottom: calc(3em + 10px); */
   }
 
   aside {
@@ -80,9 +80,6 @@ main {
 
   footer {
     grid-area: footer;
-    height: 3em;
-    border: 10px white inset;
-    background-color: black;
     position: static;
     width: calc(30rem + 10vw);
     justify-self: center;
