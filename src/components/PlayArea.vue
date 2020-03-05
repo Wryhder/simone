@@ -4,7 +4,9 @@
     <Button
           v-for="(item, index) in numberOfButtonsForCurrentLevel"
           :key="index"
-          v-bind:class="[buttonBackgroundColours[index % buttonBackgroundColours.length]]"
+        v-bind:class="[
+          buttonBackgroundColours[index % buttonBackgroundColours.length]
+        ]"
     />
     </transition-group>
 
@@ -27,7 +29,7 @@ Object.defineProperty(Vue.prototype, "$_", { value: _ });
 
 @Component({
   components: {
-    Button,
+    Button
   },
   computed: {
     ...mapState(["numberOfButtonsForCurrentLevel"])
@@ -47,7 +49,9 @@ export default class PlayArea extends Vue {
   async mounted() {
     this.$nextTick();
 
-    this.buttonDeck = document.querySelector("#play-area section:first-of-type");
+    this.buttonDeck = document.querySelector(
+      "#play-area section:first-of-type"
+    );
     this.buttonList = document.querySelectorAll("#simone-button");
     this.shuffledButtons = _.shuffle(Array.from(this.buttonList));
 
