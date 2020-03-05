@@ -20,14 +20,15 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({})
 export default class Home extends Vue {
-  typedText;
-  speed;
-  startIndex;
-  arrayLength;
-  scrollAt;
-  textPos;
-  contents;
-  row;
+  typedText: Array<string>;
+  speed: number; // time delay of print out
+  startIndex: number; // start printing array at this position
+  arrayLength: number; // the length of the text array
+  scrollAt: number; // start scrolling up at this many lines
+  textPos: number;
+  contents: string;
+  row: number; // initialise current row
+  destination: HTMLElement | null;
 
   created() {
     this.typedText = [
@@ -35,14 +36,10 @@ export default class Home extends Vue {
       "Find out your criminal coefficient with the game of Simone.",
       "Your final score will be calculated as the overall average of all scores recorded."
     ];
-    this.speed = 100; // time delay of print out
-    this.startIndex = 0; // start printing array at this posision
-    this.arrayLength = null; // the length of the text array
-    this.scrollAt = 20; // start scrolling up at this many lines
-
+    this.speed = 100; 
+    this.startIndex = 0; 
+    this.scrollAt = 20; 
     this.textPos = 0; // initialise text position
-    this.contents = ""; // initialise contents variable
-    this.row = null; // initialise current row
   }
 
   mounted() {
