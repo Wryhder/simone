@@ -13,9 +13,6 @@ export default new Vuex.Store({
     increment(state) {
       state.numberOfButtonsForCurrentLevel++;
     },
-    reset(state) {
-      // reset current level
-    }
   },
   actions: {},
   modules: {}
