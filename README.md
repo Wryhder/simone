@@ -1,28 +1,36 @@
 # Simone
 
+A clone of the memory game, Simon, which requires a player to repeat a series of patterns that get longer as the game progresses
+
+### Tech Stack
+
+- Vue.js/Vuex
+- TypeScript
+- SCSS
+
 ## Local Setup
 
-### Install dependencies
+#### Install dependencies
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+#### Compiles and hot-reloads for development
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+#### Compiles and minifies for production
 ```
 npm run build
 ```
 
-### Run your tests
+#### Run your tests
 ```
 npm run test
 ```
 
-### Lints and fixes files
+#### Lints and fixes files
 ```
 npm run lint
 ```
