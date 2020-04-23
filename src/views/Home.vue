@@ -25,7 +25,7 @@ export default class Home extends Vue {
       "Find out your criminal coefficient with the game of Simone.",
       "Your final score will be calculated as the overall average of all scores recorded."
     ];
-  speed: number = 100; // time delay of print out
+  speed: number = 65; // time delay of print out
   startIndex: number = 0; // start printing array at this position
   arrayLength: number; // the length of the text array
   scrollAt: number = 20; // start scrolling up at this many lines
