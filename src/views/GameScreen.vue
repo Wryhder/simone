@@ -57,7 +57,7 @@ main {
   margin-bottom: 3em;
 }
 
-@media screen and (min-width: 650px) {
+@media screen and (min-width: 814px) {
   #gamescreen {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -86,6 +86,13 @@ main {
 
   aside {
     height: 100vh;
+  }
+}
+
+@media screen and (min-width: 650px) {
+  footer {
+    right: 5%;
+    left: 5%;
   }
 }
 </style>

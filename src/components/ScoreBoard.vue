@@ -56,7 +56,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 80%;
+  width: 60%;
   margin: 0 auto;
   padding: 2em 0;
   border-radius: 10px;
@@ -98,7 +98,7 @@ th {
   padding: 0.4em;
 }
 
-@media screen and (min-width: 650px) {
+@media screen and (min-width: 814px) {
   #scoreboard {
     height: 100%;
   }
@@ -121,5 +121,11 @@ th {
   table {
     width: 100%;
   }
+}
+
+@media screen and (max-width: 560px) {
+  #scoreboard section {
+  width: 80%;
+}
 }
 </style>
