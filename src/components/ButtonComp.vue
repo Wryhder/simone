@@ -2,12 +2,7 @@
   <button id="simone-button"></button>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-
-@Component
-export default class Button extends Vue {}
-</script>
+<script lang="ts"></script>
 
 <style>
 #simone-button {
