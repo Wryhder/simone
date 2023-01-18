@@ -1,13 +1,13 @@
-<template>
-  <div id="statusarea">
-    {score}
-  </div>
-</template>
-
-<script>
+<script lang="ts">
 export default {
-  props: ["score"]
+  props: ["score"],
 };
 </script>
+
+<template>
+  <div id="statusarea">
+    {{ score }}
+  </div>
+</template>
 
 <style></style>

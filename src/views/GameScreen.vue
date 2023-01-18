@@ -1,3 +1,17 @@
+<script lang="ts">
+import PlayArea from "../components/PlayArea.vue";
+import ScoreBoard from "../components/ScoreBoard.vue";
+import StatusArea from "../components/StatusArea.vue";
+
+export default {
+  components: {
+    PlayArea,
+    ScoreBoard,
+    StatusArea,
+  },
+};
+</script>
+
 <template>
   <div id="gamescreen">
     <main>
@@ -12,27 +26,10 @@
   </div>
 </template>
 
-<script>
-import { Component, Vue, Prop } from "vue-property-decorator";
-
-import PlayArea from "../components/PlayArea";
-import ScoreBoard from "../components/ScoreBoard";
-import StatusArea from "../components/StatusArea";
-
-@Component({
-  components: {
-    PlayArea,
-    ScoreBoard,
-    StatusArea
-  }
-})
-export default class GameScreen extends Vue {}
-</script>
-
 <style>
 #gamescreen {
   min-height: 100vh;
-  background-image: url("../assets/psycho pass_gamescreen2.jpg");
+  background-image: url("../assets/psycho-pass_gamescreen2.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-color: chocolate;

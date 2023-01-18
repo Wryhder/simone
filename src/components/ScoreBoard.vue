@@ -43,12 +43,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "ScoreBoard"
-};
-</script>
-
 <style>
 #scoreboard section {
   background-color: black;
@@ -125,7 +119,7 @@ th {
 
 @media screen and (max-width: 560px) {
   #scoreboard section {
-  width: 80%;
-}
+    width: 80%;
+  }
 }
 </style>
