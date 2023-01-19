@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { mapActions, mapWritableState } from "pinia";
 import { usePlayerStore } from "../stores/player";
 
@@ -16,12 +16,6 @@ export default defineComponent({
       playerPatternLength: 0 as number,
       clickedButtons: [] as Array<EventTarget>,
       buttonBackgroundColours: ["indianred", "blue", "purple", "green"],
-      buttonElements: {
-        indianred: document.querySelector(".indianred"),
-        blue: document.querySelector(".blue"),
-        purple: document.querySelector(".purple"),
-        green: document.querySelector(".green"),
-      },
     };
   },
   computed: {
@@ -41,47 +35,37 @@ export default defineComponent({
       this.buttonDeck.removeEventListener("click", this.manageGamePlay);
     },
 
-    manageGamePlay(event: Event) {
-      const clickTarget: EventTarget | null = event.target;
-
-      while (!this.isGameOver) {
-        // 1. Play animation pattern
-        // 2. Attach listeners, wait for user clicks,
-        // verify pattern (increasing score with each correct pattern)
-        // 3. Remove listeners, play next pattern
-        // if (!this.isValid(clickTarget)) {
-        //   console.log(clickTarget);
-        //   this.isGameOver = true;
-        //   console.log(this.isGameOver);
-        // }
-      }
-      // console.log(this.isValid(clickTarget));
-    },
-
     animateButtons(callback?: CallableFunction) {
       let animationDelay = 0;
       let self = this;
       let lastAnimatedButton: ButtonComp =
         this.pattern[this.pattern.length - 1];
 
-      // for (const colour of self.pattern) {
-      //   button.classList.toggle("heartbeat");
-      //   button.setAttribute(
-      //     "style",
-      //     `animation-delay: ${(animationDelay += 2)}s`
-      //   );
-      // }
+      for (const colour of self.pattern) {
+        const button: HTMLButtonElement = (
+          ref(self.$refs[colour]).value as Array<any>
+        )[0].$el;
+        button.classList.toggle("heartbeat");
+        button.setAttribute(
+          "style",
+          `animation-delay: ${(animationDelay += 2)}s`
+        );
+      }
 
       function handleAnimationEnd() {
-        // for (const colour of self.pattern) {
-        //   button.classList.toggle("heartbeat");
-        //   button.removeAttribute("style");
-        // }
+        for (const colour of self.pattern) {
+          const button: HTMLButtonElement = (
+            ref(self.$refs[colour]).value as Array<any>
+          )[0].$el;
 
-        // lastAnimatedButton.removeEventListener(
-        //   "animationend",
-        //   handleAnimationEnd
-        // );
+          button.classList.toggle("heartbeat");
+          button.removeAttribute("style");
+        }
+
+        lastAnimatedButton.removeEventListener(
+          "animationend",
+          handleAnimationEnd
+        );
 
         if (typeof callback === "function") callback();
       }
@@ -111,25 +95,41 @@ export default defineComponent({
       //   this.playerPatternLength.length <= this.numberOfButtonsForCurrentLevel
       // );
     },
-    async mounted() {
-      await this.$nextTick();
 
-      this.buttonDeck = document.querySelector(
-        "#play-area section:first-of-type"
-      );
-      this.lengthenPattern(this.getRandomId());
-      console.log(this.pattern);
-      this.playerPatternLength = 0;
-      this.isGameOver = false;
+    manageGamePlay(event: Event) {
+      const clickTarget: EventTarget | null = event.target;
 
-      this.animateButtons(this.attachListeners);
+      while (!this.isGameOver) {
+        // 1. Play animation pattern
+        // 2. Attach listeners, wait for user clicks,
+        // verify pattern (increasing score with each correct pattern)
+        // 3. Remove listeners, play next pattern
+        // if (!this.isValid(clickTarget)) {
+        //   console.log(clickTarget);
+        //   this.isGameOver = true;
+        //   console.log(this.isGameOver);
+        // }
+      }
+      // console.log(this.isValid(clickTarget));
     },
+  },
+  async mounted() {
+    await this.$nextTick();
+
+    this.buttonDeck = document.querySelector(
+      "#play-area section:first-of-type"
+    );
+    this.lengthenPattern(this.getRandomId());
+    this.playerPatternLength = 0;
+    this.isGameOver = false;
+
+    this.animateButtons(this.attachListeners);
   },
 });
 </script>
 
 <template>
-  <section id="play-area">
+  <section ref="hansel" id="play-area">
     <transition-group tag="section">
       <ButtonComp
         v-for="(item, index) in buttonBackgroundColours.length"
@@ -137,12 +137,13 @@ export default defineComponent({
         v-bind:class="[
           buttonBackgroundColours[index % buttonBackgroundColours.length],
         ]"
+        :ref="`${buttonBackgroundColours[index]}`"
       />
     </transition-group>
 
     <div class="buttons">
-      <!-- <button @click="resetLevel">Reset Level</button>
-      <button @click="saveGame">Save Game and Exit</button> -->
+      <!-- <button v-if="!gameStarted" @click="resetLevel">Start</button>
+      <button v-else @click="saveGame">Save Game and Exit</button> -->
     </div>
   </section>
 </template>

@@ -1,11 +1,11 @@
 <template>
-  <button id="simone-button"></button>
+  <button class="simone-button"></button>
 </template>
 
 <script lang="ts"></script>
 
 <style>
-#simone-button {
+.simone-button {
   width: 15em;
   height: 60px;
   margin: 0 0 10px 0;
