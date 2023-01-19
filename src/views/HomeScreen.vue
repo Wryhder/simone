@@ -6,7 +6,7 @@ export default defineComponent({
     return {
       typedText: [
         "Welcome to the Sybil System grading portal!",
-        "Find out your criminal coefficient with the game of Simone.",
+        "Find out your Criminal Coefficient with the game of Simone.",
         "Your final score will be calculated as the overall average of all scores recorded.",
       ],
       speed: 65, // time delay of print out
@@ -100,7 +100,7 @@ h1 {
 p {
   width: 80%;
   margin: 5.8em auto 3.5em auto;
-  font-size: 1.5em;
+  font-size: 1.2em;
   font-family: "Tomorrow", sans-serif;
   color: white;
   background-color: black;
