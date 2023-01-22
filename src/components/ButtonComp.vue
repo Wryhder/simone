@@ -2,7 +2,9 @@
   <button class="simone-button"></button>
 </template>
 
-<script lang="ts"></script>
+<script lang="ts">
+export default {};
+</script>
 
 <style>
 .simone-button {
@@ -15,19 +17,19 @@
   outline: none;
 }
 
-.indianred {
+#indianred {
   background: linear-gradient(to bottom, white 5%, indianred 100%);
 }
 
-.blue {
+#blue {
   background: linear-gradient(to bottom, white 5%, blue 100%);
 }
 
-.purple {
+#purple {
   background: linear-gradient(to bottom, white 5%, purple 100%);
 }
 
-.green {
+#green {
   background: linear-gradient(to bottom, white 5%, green 100%);
 }
 </style>
