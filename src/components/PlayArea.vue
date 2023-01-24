@@ -48,54 +48,124 @@ export default defineComponent({
       );
     },
 
-    attachAnimationEndListener() {
-      (this.buttonDeck as HTMLElement).addEventListener(
-        "animationend",
-        this.handleAnimationEnd
-      );
-    },
+    playAnimationSequence() {
+      const pattern = this.getPattern();
+      if (this.isEmptyArray(pattern) === false) {
+        console.log("Error! No pattern to animate.");
+        return;
+      }
 
-    removeAnimationEndListener() {
-      (this.buttonDeck as HTMLElement).removeEventListener(
-        "animationend",
-        this.handleAnimationEnd
-      );
-    },
-
-    animateButtons() {
-      let animationDelay = 0;
+      const patternCopy = [...this.getPattern()]; // Make a copy we can modify
+      let animationCount = 1; // Tracks each colour/button animation in a pattern
+      let animationDelay = 0; // CSS animation-delay; needs be to handled conditionally
       const self = this;
 
       console.log(`playing pattern ${count++}`);
 
-      for (const colour of this.getPattern()) {
-        const button: HTMLButtonElement = (
-          ref(self.$refs[colour]).value as Array<any>
-        )[0].$el;
-        button.classList.toggle("heartbeat");
-        button.setAttribute(
-          "style",
-          `animation-delay: ${(animationDelay += 1)}s`
+      function animateButtons() {
+        const buttonColour = patternCopy.shift();
+        const buttonToAnimate: HTMLButtonElement = self.getButton(
+          buttonColour as string
         );
+
+        console.log("animationCount: ", animationCount);
+        console.log("buttonToAnimate: ", buttonToAnimate);
+
+        let previousButtonColour;
+        // if this is not the first animation in the sequence (i.e, != pattern[0])
+        if (animationCount > 1) {
+          previousButtonColour = pattern[animationCount - 2];
+          const previousButton: HTMLButtonElement = self.getButton(
+            previousButtonColour as string
+          );
+
+          console.log("previousButtonColour: ", previousButtonColour);
+          console.log(
+            "previousButton: removing animationend listener and animation styles..."
+          );
+
+          // Remove listener on previous button in pattern (may be current button);
+          previousButton.removeEventListener("animationend", animateButtons);
+          // Remove any existing animation styles on current AND previous button
+          // !!!! Not removing styles on previous button causes buggy animation esp.
+          // when the same colour is repeated consecutively (current == previous button)
+          self.removeAnimationStyles(previousButton);
+          self.removeAnimationStyles(buttonToAnimate);
+
+          console.log("previousButton: ", previousButton);
+          console.log("buttonToAnimate: ", buttonToAnimate);
+        }
+
+        function endAnimationSequence() {
+          // We can start listening for player clicks
+          self.attachClickListener();
+          buttonToAnimate.removeEventListener(
+            "animationend",
+            endAnimationSequence
+          );
+        }
+
+        // Check for end of pattern
+        if (animationCount === pattern.length) {
+          console.log(
+            "Reaching end of animation sequence. Adding listener to trigger " +
+              "player click handling..."
+          );
+          buttonToAnimate.addEventListener(
+            "animationend",
+            endAnimationSequence
+          );
+        } else {
+          console.log(
+            "Adding listener for animationend event to animate next button in pattern..."
+          );
+          // Set up animation for next colour/button in the pattern
+          buttonToAnimate.addEventListener("animationend", animateButtons);
+        }
+
+        console.log("Animating button...");
+
+        // For the most part, animation timing is handled conditionally to ensure that
+        // it's never unclear when the same button is repeated consecutively in the
+        // animation sequence
+        if (animationCount > 1) {
+          if (buttonColour === previousButtonColour) {
+            setTimeout(() => {
+              self.animateButton(buttonToAnimate, (animationDelay -= 0.07));
+            }, 0); // 0 works; setTimeout() is necessary to maintain the correct sequence
+          } else {
+            self.animateButton(buttonToAnimate, (animationDelay -= 0.05));
+          }
+        } else {
+          self.animateButton(buttonToAnimate, (animationDelay += 0.5));
+        }
+
+        animationCount++;
       }
+
+      animateButtons();
     },
 
-    handleAnimationEnd() {
-      const self = this;
+    animateButton(button: HTMLButtonElement, animationDelay: number) {
+      const animationDuration = 0.5;
 
-      (function removeAnimationStyles() {
-        for (const colour of self.getPattern()) {
-          const button: HTMLButtonElement = (
-            ref(self.$refs[colour]).value as Array<any>
-          )[0].$el;
+      button.classList.toggle("heartbeat");
+      button.style.animationDelay = `${animationDelay}s`;
+      button.style.animationDuration = `${animationDuration}s`;
+    },
 
-          button.classList.toggle("heartbeat");
-          button.removeAttribute("style");
-        }
-      })();
+    removeAnimationStyles(button: HTMLButtonElement) {
+      if (button.classList.contains("heartbeat")) {
+        button.classList.toggle("heartbeat");
+      }
+      button.removeAttribute("style");
+    },
 
-      this.removeAnimationEndListener();
-      this.attachClickListener();
+    cleanUpAllButtonAnimationStyles() {
+      for (const colour of this.buttonBackgroundColours) {
+        const button: HTMLButtonElement = this.getButton(colour as string);
+        this.removeAnimationStyles(button);
+      }
     },
 
     getRandomId(): string {
@@ -104,12 +174,20 @@ export default defineComponent({
       ];
     },
 
+    getButton(colour: string) {
+      return (ref(this.$refs[colour as string]).value as Array<any>)[0].$el;
+    },
+
     getPattern(): Array<string> {
       return this.proxyToArray(this.pattern);
     },
 
     proxyToArray(proxy: any): Array<string> {
       return isProxy(proxy) ? toRaw(proxy) : proxy;
+    },
+
+    isEmptyArray(array: Array<string>) {
+      return array.length === 0 ? false : true;
     },
 
     manageGamePlay(event: Event) {
@@ -172,23 +250,29 @@ export default defineComponent({
     // If pattern is correct, remove listeners, play next pattern
     handleCorrectPatternGuess() {
       console.log("whooo! we'll keep playing!");
+      // Update player score history ("My Score History") and
+      // "Known Latent Criminals" (leaderboard of sorts)
+      this.prepForNextPattern();
+      this.setUpGamePlay();
+    },
+
+    prepForNextPattern() {
       this.clearPlayerGuessArray();
       // Destroy all registered event listeners
       this.removeClickListener();
-      // Update player score history ("My Score History") and
-      // "Known Latent Criminals" (leaderboard of sorts)
-      this.setUpPlayArea();
+      this.cleanUpAllButtonAnimationStyles();
     },
 
-    setUpPlayArea() {
-      this.attachAnimationEndListener();
+    setUpGamePlay() {
       this.lengthenPattern(this.getRandomId());
-      this.animateButtons();
+
+      const timeout = 200; // Mostly to prevent missing the first animation on game start
+      setTimeout(this.playAnimationSequence, timeout);
     },
 
     startGame() {
       this.gameStarted = true;
-      this.setUpPlayArea();
+      this.setUpGamePlay();
     },
 
     saveGame() {},
