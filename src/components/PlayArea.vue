@@ -50,11 +50,6 @@ export default defineComponent({
 
     playAnimationSequence() {
       const pattern = this.getPattern();
-      if (this.isEmptyArray(pattern) === false) {
-        console.log("Error! No pattern to animate.");
-        return;
-      }
-
       const patternCopy = [...this.getPattern()]; // Make a copy we can modify
       let animationCount = 1; // Tracks each colour/button animation in a pattern
       let animationDelay = 0; // CSS animation-delay; needs be to handled conditionally
@@ -184,10 +179,6 @@ export default defineComponent({
 
     proxyToArray(proxy: any): Array<string> {
       return isProxy(proxy) ? toRaw(proxy) : proxy;
-    },
-
-    isEmptyArray(array: Array<string>) {
-      return array.length === 0 ? false : true;
     },
 
     manageGamePlay(event: Event) {
