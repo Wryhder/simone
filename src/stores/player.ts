@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 
 export const usePlayerStore = defineStore("player", {
   state: () => ({
-    numberOfButtonsForCurrentLevel: 4,
     playerName: "",
     sessionScores: [] as Array<number>,
     pattern: [] as Array<string>,
@@ -14,6 +13,12 @@ export const usePlayerStore = defineStore("player", {
   actions: {
     lengthenPattern(id: string) {
       this.pattern.push(id);
+    },
+    savePlayerGuess(colour: string) {
+      this.guessed.push(colour);
+    },
+    clearPlayerGuessArray() {
+      this.guessed = [];
     },
   },
 });

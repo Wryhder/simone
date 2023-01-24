@@ -1,11 +1,13 @@
 <template>
-  <button id="simone-button"></button>
+  <button class="simone-button"></button>
 </template>
 
-<script lang="ts"></script>
+<script lang="ts">
+export default {};
+</script>
 
 <style>
-#simone-button {
+.simone-button {
   width: 15em;
   height: 60px;
   margin: 0 0 10px 0;
@@ -15,19 +17,19 @@
   outline: none;
 }
 
-.indianred {
+#indianred {
   background: linear-gradient(to bottom, white 5%, indianred 100%);
 }
 
-.blue {
+#blue {
   background: linear-gradient(to bottom, white 5%, blue 100%);
 }
 
-.purple {
+#purple {
   background: linear-gradient(to bottom, white 5%, purple 100%);
 }
 
-.green {
+#green {
   background: linear-gradient(to bottom, white 5%, green 100%);
 }
 </style>
