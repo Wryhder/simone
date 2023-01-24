@@ -233,15 +233,15 @@ export default defineComponent({
     handleIncorrectGuess() {
       console.log("game over");
       this.isGameOver = true;
-      // Destroy all registered event listeners
-      // Show game-over modal (?) and final score
+      // TODO: Destroy all registered event listeners
+      // TODO: Show game-over modal (?) and final score
       window.location.reload(); // temporary workaround for testing purposes
     },
 
     // If pattern is correct, remove listeners, play next pattern
     handleCorrectPatternGuess() {
       console.log("whooo! we'll keep playing!");
-      // Update player score history ("My Score History") and
+      // TODO: Update player score history ("My Score History") and
       // "Known Latent Criminals" (leaderboard of sorts)
       this.prepForNextPattern();
       this.setUpGamePlay();
