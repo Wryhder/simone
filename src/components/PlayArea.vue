@@ -9,7 +9,6 @@ import ButtonComp from "./ButtonComp.vue";
 
 let playerGuesses: Array<string>;
 let animatedPattern: Array<string>;
-let count = 1;
 
 export default defineComponent({
   components: {
@@ -20,18 +19,42 @@ export default defineComponent({
       buttonDeck: null as HTMLElement | null,
       isGameOver: false as boolean,
       playerPatternLength: 0 as number,
+      timerOff: true as boolean,
+      startTime: 0 as number,
+      stopTime: 0 as number,
+      baseLevelScore: 15 as number,
+      patternCount: 1 as number, // Tracks each pattern animation sequence
       gameStarted: false as boolean,
       buttonBackgroundColours: ["indianred", "blue", "purple", "green"],
     };
   },
+  watch: {
+    patternCount(newCount: number) {
+      switch (true) {
+        case newCount === 41:
+        case newCount === 31:
+        case newCount === 21:
+        case newCount === 11:
+          this.updateLevel();
+          this.initLevelData(this.level);
+          this.increaseBaseLevelScore();
+          break;
+      }
+    },
+  },
   computed: {
-    ...mapWritableState(usePlayerStore, ["pattern", "guessed"]),
+    ...mapWritableState(usePlayerStore, ["level", "pattern", "guessed"]),
+    timeTaken() {
+      return (this.stopTime - this.startTime) * 0.001; // convert milliseconds to seconds
+    },
   },
   methods: {
     ...mapActions(usePlayerStore, [
       "lengthenPattern",
       "savePlayerGuess",
       "clearPlayerGuessArray",
+      "initLevelData",
+      "savePlayerStats",
     ]),
 
     attachClickListener() {
@@ -55,7 +78,7 @@ export default defineComponent({
       let animationDelay = 0; // CSS animation-delay; needs be to handled conditionally
       const self = this;
 
-      console.log(`playing pattern ${count++}`);
+      console.log(`playing pattern ${this.patternCount++}`);
 
       function animateButtons() {
         const buttonColour = patternCopy.shift();
@@ -185,6 +208,11 @@ export default defineComponent({
       const clickTarget: HTMLButtonElement | EventTarget | null = event.target;
 
       if (this.isValid(clickTarget) === true) {
+        if (this.timerOff) {
+          this.timerOff = false;
+          this.startTime = Date.now();
+        }
+
         const clickTargetID = (clickTarget as HTMLButtonElement).id;
         this.savePlayerGuess(clickTargetID);
 
@@ -233,23 +261,77 @@ export default defineComponent({
     handleIncorrectGuess() {
       console.log("game over");
       this.isGameOver = true;
-      // Destroy all registered event listeners
-      // Show game-over modal (?) and final score
+      // TODO: Destroy all registered event listeners
+      // TODO: Show game-over modal (?) and final score
       window.location.reload(); // temporary workaround for testing purposes
     },
 
     // If pattern is correct, remove listeners, play next pattern
     handleCorrectPatternGuess() {
+      this.stopTime = Date.now();
+      this.timerOff = true;
+
+      const level = this.level,
+        timeTaken = this.timeTaken,
+        score = this.getScore(level, timeTaken);
+      this.savePlayerStats(level, score, timeTaken);
+
       console.log("whooo! we'll keep playing!");
-      // Update player score history ("My Score History") and
-      // "Known Latent Criminals" (leaderboard of sorts)
+      console.log(`score: ${score}, level: ${level}, timeTaken: ${timeTaken}`);
+
       this.prepForNextPattern();
       this.setUpGamePlay();
     },
 
+    getScore(level: number, timeTaken: number) {
+      const score = this.baseLevelScore;
+      const adjustedScore = this.adjustScoreByTimeTaken(
+        score,
+        level,
+        timeTaken
+      );
+      return adjustedScore;
+    },
+
+    adjustScoreByTimeTaken(score: number, level: number, timeTaken: number) {
+      switch (true) {
+        case level === 1 && timeTaken <= 10:
+        case level === 2 && timeTaken <= 30:
+        case level === 3 && timeTaken <= 60:
+        case level === 4 && timeTaken <= 80:
+        case level === 5 && timeTaken <= 100:
+          score += 5;
+          break;
+        default:
+          score -= 5;
+          break;
+      }
+
+      return score;
+    },
+
+    updateLevel() {
+      let patternCount = this.patternCount;
+
+      switch (true) {
+        case patternCount > 40 && patternCount <= 50:
+        case patternCount > 30 && patternCount <= 40:
+        case patternCount > 20 && patternCount <= 30:
+        case patternCount > 10 && patternCount <= 20:
+          this.level++;
+          break;
+        default:
+          this.level = 1;
+          break;
+      }
+    },
+
+    increaseBaseLevelScore() {
+      this.baseLevelScore += 5;
+    },
+
     prepForNextPattern() {
       this.clearPlayerGuessArray();
-      // Destroy all registered event listeners
       this.removeClickListener();
       this.cleanUpAllButtonAnimationStyles();
     },
@@ -262,6 +344,8 @@ export default defineComponent({
     },
 
     startGame() {
+      this.initLevelData(this.level);
+
       this.gameStarted = true;
       this.setUpGamePlay();
     },

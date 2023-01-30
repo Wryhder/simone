@@ -1,3 +1,45 @@
+<script lang="ts">
+// TODO: Update "Known Latent Criminals" (leaderboard of sorts)
+
+import { defineComponent, ref } from "vue";
+import { mapState } from "pinia";
+import { usePlayerStore } from "../stores/player";
+
+import TableRow from "./TableRow.vue";
+
+export default defineComponent({
+  components: {
+    TableRow,
+  },
+  data() {
+    return {
+      initialLevelScore: "N/A" as string | number,
+    };
+  },
+  computed: {
+    ...mapState(usePlayerStore, ["level", "sessionScores"]),
+  },
+  watch: {
+    level(_, oldValue) {
+      const self = this;
+
+      (function setPreviousLevelScore() {
+        const key = `level${oldValue}` as keyof typeof self.sessionScores;
+        const scoreTableCell = (ref(self.$refs[key]).value as Array<any>)[0].$el
+          .children[1];
+        const scoresArray: Array<number> = self.sessionScores[key].scores;
+        const averageScore =
+          scoresArray.reduce(
+            (accumulator, currentValue) => accumulator + currentValue
+          ) / scoresArray.length;
+
+        scoreTableCell.textContent = `${averageScore.toFixed(2)}`;
+      })();
+    },
+  },
+});
+</script>
+
 <template>
   <div id="scoreboard">
     <section>
@@ -5,18 +47,18 @@
       <div id="scores">
         <table>
           <tbody>
-            <tr>
-              <td>Level 1</td>
-              <td>50</td>
-            </tr>
-            <tr>
-              <td>Level 2</td>
-              <td>120</td>
-            </tr>
+            <TableRow
+              v-for="(_, key, index) in sessionScores"
+              :key="key"
+              :ref="key"
+              :level="index + 1"
+              :level-score="initialLevelScore"
+            />
           </tbody>
         </table>
       </div>
     </section>
+
     <section>
       <h3>Known Latent Criminals</h3>
       <div id="latent-criminals">
