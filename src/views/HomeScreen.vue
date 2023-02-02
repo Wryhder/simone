@@ -110,9 +110,6 @@ p {
 
 .buttons {
   margin-top: 6em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 @media screen and (min-width: 650px) {
@@ -120,29 +117,9 @@ p {
     width: 60%;
   }
 
-  .buttons {
-    flex-direction: row;
-    justify-content: center;
-    margin-right: 0;
-  }
-
   .buttons button:first-of-type {
     margin-right: 60px;
   }
-}
-
-.buttons button {
-  padding: 10px;
-  margin-bottom: 20px;
-  color: black;
-  font-size: 1em;
-  font-family: "Audiowide", cursive;
-  border: none;
-  box-shadow: 0px 10px 14px -7px #276873;
-  background: linear-gradient(to bottom, navajowhite 5%, #77a809 100%);
-  border-radius: 10px;
-  cursor: pointer;
-  width: fit-content;
 }
 
 button span {
