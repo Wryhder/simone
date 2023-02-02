@@ -360,6 +360,8 @@ export default defineComponent({
 
     loadSavedGame() {},
 
+    // TODO: debug restart game functionality (why does the entire app reload instead of
+    // just refreshing the GameScreen component?)
     restartGame() {
       this.showModal = false;
       this.playerStore.$reset();

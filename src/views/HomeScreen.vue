@@ -63,6 +63,7 @@ export default defineComponent({
 <template>
   <div id="home">
     <h1>Simone</h1>
+    <!-- TODO: Redo typewriter animation with CSS -->
     <p id="typed-text"></p>
     <div class="buttons">
       <button @click="$emit('start-game')" :to="{ name: 'Game Screen' }">

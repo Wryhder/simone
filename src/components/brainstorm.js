@@ -93,6 +93,7 @@ After a wrong pattern guess:
     Clear state
     Reload game screen
 
+    // TODO: Implement this
     NB(?): Players shouldn't have to start afresh from beginning if they
      cleared the previous level e.g game-over in level 2 means they can
      restart at begiining of level 2
@@ -100,5 +101,10 @@ After a wrong pattern guess:
   Exiting game (w/ "Exit" button)
     Clear state
     Navigate to home screen
+
+TODO: 
+  1. add tests
+  2. write three articles (saving and loading app state w/ vue/pinia,
+    javascript weakmap/weakset, )
 
 */
