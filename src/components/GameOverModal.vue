@@ -50,13 +50,17 @@ export default defineComponent({
 
       for (const key in this.sessionScores) {
         const levelKey = key as keyof typeof this.sessionScores;
-        const scoresArray: Array<number> = this.sessionScores[levelKey].scores;
-        const levelScore =
-          scoresArray.reduce(
-            (accumulator, currentValue) => accumulator + currentValue
-          ) / scoresArray.length;
 
-        levelScores.push(levelScore);
+        if (this.sessionScores[levelKey] !== undefined) {
+          const scoresArray: Array<number> =
+            this.sessionScores[levelKey].scores;
+          const levelScore =
+            scoresArray.reduce(
+              (accumulator, currentValue) => accumulator + currentValue
+            ) / scoresArray.length;
+
+          levelScores.push(levelScore);
+        }
       }
 
       const averageScore =
