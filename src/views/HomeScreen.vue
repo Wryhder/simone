@@ -16,7 +16,7 @@ export default defineComponent({
       textPos: 0, // initialise text position
       contents: "",
       row: 0, // initialise current row
-      destination: HTMLElement | null,
+      destination: null as HTMLElement | null,
     };
   },
 
@@ -29,7 +29,7 @@ export default defineComponent({
         this.contents += this.typedText[this.row++] + "<br />";
       }
 
-      this.destination.innerHTML =
+      (this.destination as HTMLElement).innerHTML =
         this.contents +
         this.typedText[this.startIndex].substring(0, this.textPos) +
         "_";
