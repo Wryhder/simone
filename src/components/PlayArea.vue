@@ -6,6 +6,7 @@ import { usePlayerStore } from "../stores/player";
 import { isEqual } from "lodash";
 
 import ButtonComp from "./ButtonComp.vue";
+import GameOverModal from "./GameOverModal.vue";
 
 let playerGuesses: Array<string>;
 let animatedPattern: Array<string>;
@@ -13,19 +14,21 @@ let animatedPattern: Array<string>;
 export default defineComponent({
   components: {
     ButtonComp,
+    GameOverModal,
   },
   data() {
     return {
+      playerStore: usePlayerStore(),
       buttonDeck: null as HTMLElement | null,
-      isGameOver: false as boolean,
+      isGameOver: true as boolean,
       playerPatternLength: 0 as number,
       timerOff: true as boolean,
       startTime: 0 as number,
       stopTime: 0 as number,
       baseLevelScore: 15 as number,
       patternCount: 1 as number, // Tracks each pattern animation sequence
-      gameStarted: false as boolean,
       buttonBackgroundColours: ["indianred", "blue", "purple", "green"],
+      showModal: false as boolean,
     };
   },
   watch: {
@@ -43,7 +46,12 @@ export default defineComponent({
     },
   },
   computed: {
-    ...mapWritableState(usePlayerStore, ["level", "pattern", "guessed"]),
+    ...mapWritableState(usePlayerStore, [
+      "gameStarted",
+      "level",
+      "pattern",
+      "guessed",
+    ]),
     timeTaken() {
       return (this.stopTime - this.startTime) * 0.001; // convert milliseconds to seconds
     },
@@ -261,9 +269,7 @@ export default defineComponent({
     handleIncorrectGuess() {
       console.log("game over");
       this.isGameOver = true;
-      // TODO: Destroy all registered event listeners
-      // TODO: Show game-over modal (?) and final score
-      window.location.reload(); // temporary workaround for testing purposes
+      this.showModal = true;
     },
 
     // If pattern is correct, remove listeners, play next pattern
@@ -346,7 +352,7 @@ export default defineComponent({
     startGame() {
       this.initLevelData(this.level);
 
-      this.gameStarted = true;
+      this.isGameOver = false;
       this.setUpGamePlay();
     },
 
@@ -354,7 +360,15 @@ export default defineComponent({
 
     loadSavedGame() {},
 
-    exitGame() {},
+    restartGame() {
+      this.showModal = false;
+      this.playerStore.$reset();
+    },
+
+    exitGame() {
+      this.gameStarted = false;
+      this.playerStore.$reset();
+    },
   },
   async mounted() {
     await this.$nextTick();
@@ -378,9 +392,17 @@ export default defineComponent({
     </transition-group>
 
     <div class="buttons">
-      <button v-if="!gameStarted" @click="startGame">Start</button>
+      <button v-if="isGameOver" @click="startGame">Start</button>
       <button v-else @click="saveGame">Save Game and Exit</button>
     </div>
+
+    <Teleport to="body">
+      <GameOverModal
+        :show="showModal"
+        @restart="restartGame"
+        @exit="exitGame"
+      />
+    </Teleport>
   </section>
 </template>
 

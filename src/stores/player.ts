@@ -18,6 +18,7 @@ export const usePlayerStore = defineStore("player", {
     },
     pattern: [] as Array<string>,
     guessed: [] as Array<string>,
+    gameStarted: false as boolean,
   }),
   getters: {
     // doubleCount: (state) => state.numberOfButtonsForCurrentLevel * 2,

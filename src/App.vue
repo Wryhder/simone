@@ -1,17 +1,19 @@
 <script lang="ts">
+import { defineComponent } from "vue";
+import { mapWritableState } from "pinia";
+import { usePlayerStore } from "./stores/player";
+
 import HomeScreen from "./views/HomeScreen.vue";
 import GameScreen from "./views/GameScreen.vue";
 
-export default {
+export default defineComponent({
   components: {
     HomeScreen,
     GameScreen,
   },
 
-  data() {
-    return {
-      gameStarted: false,
-    };
+  computed: {
+    ...mapWritableState(usePlayerStore, ["gameStarted"]),
   },
 
   methods: {
@@ -19,13 +21,13 @@ export default {
       this.gameStarted = true;
     },
   },
-};
+});
 </script>
 
 <template>
   <div id="app">
     <GameScreen v-if="gameStarted" />
-    <HomeScreen v-else v-on:start-game="startGame" />
+    <HomeScreen v-else @start-game="startGame" />
   </div>
 </template>
 
