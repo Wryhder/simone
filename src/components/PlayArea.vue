@@ -25,7 +25,7 @@ export default defineComponent({
       timerOff: true as boolean,
       startTime: 0 as number,
       stopTime: 0 as number,
-      baseLevelScore: 15 as number,
+      baseLevelScore: 50 as number,
       patternCount: 1 as number, // Tracks each pattern animation sequence
       buttonBackgroundColours: ["indianred", "blue", "purple", "green"],
       showModal: false as boolean,
@@ -306,10 +306,10 @@ export default defineComponent({
         case level === 3 && timeTaken <= 60:
         case level === 4 && timeTaken <= 80:
         case level === 5 && timeTaken <= 100:
-          score += 5;
+          score += 55;
           break;
         default:
-          score -= 5;
+          score -= 20;
           break;
       }
 
@@ -333,7 +333,7 @@ export default defineComponent({
     },
 
     increaseBaseLevelScore() {
-      this.baseLevelScore += 5;
+      this.baseLevelScore += 25;
     },
 
     prepForNextPattern() {
