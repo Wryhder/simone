@@ -5,6 +5,12 @@ type levelData = {
   playTimes: Array<number>;
 };
 
+export enum savedGameOptions {
+  No = "NO",
+  Yes = "YES",
+  Loaded = "LOADED",
+}
+
 export const usePlayerStore = defineStore("player", {
   state: () => ({
     playerName: "",
@@ -19,6 +25,9 @@ export const usePlayerStore = defineStore("player", {
     pattern: [] as Array<string>,
     guessed: [] as Array<string>,
     gameStarted: false as boolean,
+    savedGameOptions: savedGameOptions,
+    savedGame: savedGameOptions.No,
+    useSavedGame: savedGameOptions.No,
   }),
   getters: {
     // doubleCount: (state) => state.numberOfButtonsForCurrentLevel * 2,

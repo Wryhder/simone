@@ -51,6 +51,8 @@ export default defineComponent({
       "level",
       "pattern",
       "guessed",
+      "savedGame",
+      "savedGameOptions",
     ]),
     timeTaken() {
       return (this.stopTime - this.startTime) * 0.001; // convert milliseconds to seconds
@@ -350,15 +352,26 @@ export default defineComponent({
     },
 
     startGame() {
+      switch (true) {
+        case this.savedGame === this.savedGameOptions.Loaded &&
+          this.useSavedGame === this.savedGameOptions.No:
+          this.playerStore.$reset();
+          break;
+      }
+
       this.initLevelData(this.level);
 
       this.isGameOver = false;
       this.setUpGamePlay();
     },
 
-    saveGame() {},
-
-    loadSavedGame() {},
+    saveGame() {
+      localStorage.setItem(
+        "simonePlayerState",
+        JSON.stringify(this.playerStore.$state)
+      );
+      this.savedGame = this.savedGameOptions.Yes;
+    },
 
     // TODO: debug restart game functionality (why does the entire app reload instead of
     // just refreshing the GameScreen component?)
@@ -367,9 +380,16 @@ export default defineComponent({
       this.playerStore.$reset();
     },
 
+    saveGameAndExit() {
+      this.gameStarted = false;
+      this.saveGame();
+    },
+
     exitGame() {
       this.gameStarted = false;
       this.playerStore.$reset();
+      sessionStorage.clear();
+      localStorage.clear();
     },
   },
   async mounted() {
@@ -395,7 +415,9 @@ export default defineComponent({
 
     <div class="buttons">
       <button v-if="isGameOver" @click="startGame">Start</button>
-      <button v-else @click="saveGame">Save Game and Exit</button>
+      <button v-else v-show="patternCount >= 4" @click="saveGameAndExit">
+        Save Game and Exit
+      </button>
     </div>
 
     <Teleport to="body">

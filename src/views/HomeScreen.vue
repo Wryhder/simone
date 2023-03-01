@@ -1,5 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+import { mapWritableState } from "pinia";
+import { usePlayerStore } from "../stores/player";
 
 export default defineComponent({
   data() {
@@ -18,6 +20,10 @@ export default defineComponent({
       row: 0, // initialise current row
       destination: null as HTMLElement | null,
     };
+  },
+
+  computed: {
+    ...mapWritableState(usePlayerStore, ["useSavedGame", "savedGameOptions"]),
   },
 
   methods: {
@@ -47,8 +53,30 @@ export default defineComponent({
       }
     },
 
-    resumeGame() {
-      console.log("Loading saved game...");
+    startNewGame() {
+      if ("simonePlayerState" in localStorage) {
+        if (!sessionStorage.notifyUserOfSavedGame) {
+          alert(
+            `You have a saved game! Click "Ok" to dismiss this notification and we won't ` +
+              "remind you again for this session."
+          );
+          sessionStorage.setItem("notifyUserOfSavedGame", "true");
+        } else {
+          this.$emit("start-game");
+        }
+      } else {
+        this.$emit("start-game");
+      }
+    },
+
+    resumeSavedGame() {
+      if ("simonePlayerState" in localStorage) {
+        this.useSavedGame = this.savedGameOptions.Yes;
+        this.$emit("start-game");
+      } else {
+        // TODO: Notify user there's no saved game with a custom modal?
+        alert("You currently have no saved game. Please start a new game.");
+      }
     },
   },
 
@@ -66,12 +94,10 @@ export default defineComponent({
     <!-- TODO: Redo typewriter animation with CSS -->
     <p id="typed-text"></p>
     <div class="buttons">
-      <button @click="$emit('start-game')" :to="{ name: 'Game Screen' }">
+      <button @click="startNewGame" :to="{ name: 'Game Screen' }">
         Start New Game
       </button>
-      <button @click="resumeGame">
-        Resume Saved Game<span style="vertical-align: super">coming soon!</span>
-      </button>
+      <button @click="resumeSavedGame">Resume Saved Game</button>
     </div>
   </div>
 </template>

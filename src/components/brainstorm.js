@@ -102,6 +102,15 @@ After a wrong pattern guess:
     Clear state
     Navigate to home screen
 
+Saving game:
+  If user clicks the "Save Game and Exit" button:
+    Save user data to localStorage; they can use the "Resume Saved Game"
+      button to resume saved game  
+
+  If app is reloaded (page refresh) and there is a saved game, notify player
+    e.g, if they click "Start Game" instead of "Resume Saved Game"
+
+
 TODO: 
   1. add tests
   2. write three articles (saving and loading app state w/ vue/pinia,
