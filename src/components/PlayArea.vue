@@ -47,11 +47,12 @@ export default defineComponent({
   },
   computed: {
     ...mapWritableState(usePlayerStore, [
-      "gameStarted",
+      "activeView",
       "level",
       "pattern",
       "guessed",
       "savedGame",
+      "useSavedGame",
       "savedGameOptions",
     ]),
     timeTaken() {
@@ -65,6 +66,7 @@ export default defineComponent({
       "clearPlayerGuessArray",
       "initLevelData",
       "savePlayerStats",
+      "resetStore",
     ]),
 
     attachClickListener() {
@@ -352,11 +354,8 @@ export default defineComponent({
     },
 
     startGame() {
-      switch (true) {
-        case this.savedGame === this.savedGameOptions.Loaded &&
-          this.useSavedGame === this.savedGameOptions.No:
-          this.playerStore.$reset();
-          break;
+      if (this.useSavedGame === this.savedGameOptions.No) {
+        this.resetStore();
       }
 
       this.initLevelData(this.level);
@@ -373,23 +372,25 @@ export default defineComponent({
       this.savedGame = this.savedGameOptions.Yes;
     },
 
-    // TODO: debug restart game functionality (why does the entire app reload instead of
-    // just refreshing the GameScreen component?)
     restartGame() {
       this.showModal = false;
-      this.playerStore.$reset();
+      this.resetStore();
     },
 
     saveGameAndExit() {
-      this.gameStarted = false;
       this.saveGame();
+      this.goToHomeScreen();
     },
 
     exitGame() {
-      this.gameStarted = false;
-      this.playerStore.$reset();
+      this.resetStore();
       sessionStorage.clear();
       localStorage.clear();
+      this.goToHomeScreen();
+    },
+
+    goToHomeScreen() {
+      this.activeView = "HomeScreen";
     },
   },
   async mounted() {

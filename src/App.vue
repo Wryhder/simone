@@ -13,12 +13,12 @@ export default defineComponent({
   },
 
   computed: {
-    ...mapWritableState(usePlayerStore, ["gameStarted"]),
+    ...mapWritableState(usePlayerStore, ["activeView"]),
   },
 
   methods: {
     startGame() {
-      this.gameStarted = true;
+      this.activeView = "GameScreen";
     },
   },
 });
@@ -26,8 +26,7 @@ export default defineComponent({
 
 <template>
   <div id="app">
-    <GameScreen v-if="gameStarted" />
-    <HomeScreen v-else @start-game="startGame" />
+    <component :is="activeView" @start-game="startGame" />
   </div>
 </template>
 
