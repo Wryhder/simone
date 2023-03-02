@@ -6,6 +6,7 @@ import { usePlayerStore } from "../stores/player";
 import { isEqual } from "lodash";
 
 import ButtonComp from "./ButtonComp.vue";
+import GameOverModal from "./GameOverModal.vue";
 
 let playerGuesses: Array<string>;
 let animatedPattern: Array<string>;
@@ -13,19 +14,21 @@ let animatedPattern: Array<string>;
 export default defineComponent({
   components: {
     ButtonComp,
+    GameOverModal,
   },
   data() {
     return {
+      playerStore: usePlayerStore(),
       buttonDeck: null as HTMLElement | null,
-      isGameOver: false as boolean,
+      isGameOver: true as boolean,
       playerPatternLength: 0 as number,
       timerOff: true as boolean,
       startTime: 0 as number,
       stopTime: 0 as number,
-      baseLevelScore: 15 as number,
+      baseLevelScore: 50 as number,
       patternCount: 1 as number, // Tracks each pattern animation sequence
-      gameStarted: false as boolean,
       buttonBackgroundColours: ["indianred", "blue", "purple", "green"],
+      showModal: false as boolean,
     };
   },
   watch: {
@@ -43,7 +46,15 @@ export default defineComponent({
     },
   },
   computed: {
-    ...mapWritableState(usePlayerStore, ["level", "pattern", "guessed"]),
+    ...mapWritableState(usePlayerStore, [
+      "activeView",
+      "level",
+      "pattern",
+      "guessed",
+      "savedGame",
+      "useSavedGame",
+      "savedGameOptions",
+    ]),
     timeTaken() {
       return (this.stopTime - this.startTime) * 0.001; // convert milliseconds to seconds
     },
@@ -55,6 +66,7 @@ export default defineComponent({
       "clearPlayerGuessArray",
       "initLevelData",
       "savePlayerStats",
+      "resetStore",
     ]),
 
     attachClickListener() {
@@ -261,9 +273,7 @@ export default defineComponent({
     handleIncorrectGuess() {
       console.log("game over");
       this.isGameOver = true;
-      // TODO: Destroy all registered event listeners
-      // TODO: Show game-over modal (?) and final score
-      window.location.reload(); // temporary workaround for testing purposes
+      this.showModal = true;
     },
 
     // If pattern is correct, remove listeners, play next pattern
@@ -300,10 +310,10 @@ export default defineComponent({
         case level === 3 && timeTaken <= 60:
         case level === 4 && timeTaken <= 80:
         case level === 5 && timeTaken <= 100:
-          score += 5;
+          score += 55;
           break;
         default:
-          score -= 5;
+          score -= 20;
           break;
       }
 
@@ -327,7 +337,7 @@ export default defineComponent({
     },
 
     increaseBaseLevelScore() {
-      this.baseLevelScore += 5;
+      this.baseLevelScore += 25;
     },
 
     prepForNextPattern() {
@@ -344,17 +354,44 @@ export default defineComponent({
     },
 
     startGame() {
+      if (this.useSavedGame === this.savedGameOptions.No) {
+        this.resetStore();
+      }
+
       this.initLevelData(this.level);
 
-      this.gameStarted = true;
+      this.isGameOver = false;
       this.setUpGamePlay();
     },
 
-    saveGame() {},
+    saveGame() {
+      localStorage.setItem(
+        "simonePlayerState",
+        JSON.stringify(this.playerStore.$state)
+      );
+      this.savedGame = this.savedGameOptions.Yes;
+    },
 
-    loadSavedGame() {},
+    restartGame() {
+      this.showModal = false;
+      this.resetStore();
+    },
 
-    exitGame() {},
+    saveGameAndExit() {
+      this.saveGame();
+      this.goToHomeScreen();
+    },
+
+    exitGame() {
+      this.resetStore();
+      sessionStorage.clear();
+      localStorage.clear();
+      this.goToHomeScreen();
+    },
+
+    goToHomeScreen() {
+      this.activeView = "HomeScreen";
+    },
   },
   async mounted() {
     await this.$nextTick();
@@ -378,9 +415,19 @@ export default defineComponent({
     </transition-group>
 
     <div class="buttons">
-      <button v-if="!gameStarted" @click="startGame">Start</button>
-      <button v-else @click="saveGame">Save Game and Exit</button>
+      <button v-if="isGameOver" @click="startGame">Start</button>
+      <button v-else v-show="patternCount >= 4" @click="saveGameAndExit">
+        Save Game and Exit
+      </button>
     </div>
+
+    <Teleport to="body">
+      <GameOverModal
+        :show="showModal"
+        @restart="restartGame"
+        @exit="exitGame"
+      />
+    </Teleport>
   </section>
 </template>
 
@@ -411,48 +458,5 @@ export default defineComponent({
   100% {
     transform: none;
   }
-}
-
-.buttons {
-  margin-top: 6em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-@media screen and (min-width: 650px) {
-  p {
-    width: 60%;
-  }
-
-  .buttons {
-    flex-direction: row;
-    justify-content: center;
-    margin-right: 0;
-  }
-
-  .buttons button:first-of-type {
-    margin-right: 60px;
-  }
-}
-
-.buttons button {
-  padding: 10px;
-  margin-bottom: 20px;
-  color: black;
-  font-size: 1em;
-  font-family: "Audiowide", cursive;
-  border: none;
-  box-shadow: 0px 10px 14px -7px #276873;
-  background: linear-gradient(to bottom, navajowhite 5%, #77a809 100%);
-  border-radius: 10px;
-  cursor: pointer;
-  width: fit-content;
-}
-
-button span {
-  vertical-align: super;
-  font-size: 11px;
-  color: purple;
 }
 </style>

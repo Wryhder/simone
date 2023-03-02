@@ -5,8 +5,14 @@ type levelData = {
   playTimes: Array<number>;
 };
 
-export const usePlayerStore = defineStore("player", {
-  state: () => ({
+export enum savedGameOptions {
+  No = "NO",
+  Yes = "YES",
+  Loaded = "LOADED",
+}
+
+const getdefaultState = () => {
+  return {
     playerName: "",
     level: 1 as number,
     sessionScores: {
@@ -18,6 +24,16 @@ export const usePlayerStore = defineStore("player", {
     },
     pattern: [] as Array<string>,
     guessed: [] as Array<string>,
+    savedGameOptions: savedGameOptions,
+    savedGame: savedGameOptions.No,
+    useSavedGame: savedGameOptions.No,
+  };
+};
+
+export const usePlayerStore = defineStore("player", {
+  state: () => ({
+    ...getdefaultState(),
+    activeView: "HomeScreen",
   }),
   getters: {
     // doubleCount: (state) => state.numberOfButtonsForCurrentLevel * 2,
@@ -45,6 +61,9 @@ export const usePlayerStore = defineStore("player", {
 
       (this.sessionScores[key] as levelData).scores.push(score);
       (this.sessionScores[key] as levelData).playTimes.push(timeTaken);
+    },
+    resetStore() {
+      Object.assign(this.$state, getdefaultState());
     },
   },
 });

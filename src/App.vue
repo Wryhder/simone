@@ -1,31 +1,32 @@
 <script lang="ts">
+import { defineComponent } from "vue";
+import { mapWritableState } from "pinia";
+import { usePlayerStore } from "./stores/player";
+
 import HomeScreen from "./views/HomeScreen.vue";
 import GameScreen from "./views/GameScreen.vue";
 
-export default {
+export default defineComponent({
   components: {
     HomeScreen,
     GameScreen,
   },
 
-  data() {
-    return {
-      gameStarted: false,
-    };
+  computed: {
+    ...mapWritableState(usePlayerStore, ["activeView"]),
   },
 
   methods: {
     startGame() {
-      this.gameStarted = true;
+      this.activeView = "GameScreen";
     },
   },
-};
+});
 </script>
 
 <template>
   <div id="app">
-    <GameScreen v-if="gameStarted" />
-    <HomeScreen v-else v-on:start-game="startGame" />
+    <component :is="activeView" @start-game="startGame" />
   </div>
 </template>
 

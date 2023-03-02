@@ -1,5 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+import { mapWritableState } from "pinia";
+import { usePlayerStore } from "../stores/player";
 
 export default defineComponent({
   data() {
@@ -16,8 +18,12 @@ export default defineComponent({
       textPos: 0, // initialise text position
       contents: "",
       row: 0, // initialise current row
-      destination: HTMLElement | null,
+      destination: null as HTMLElement | null,
     };
+  },
+
+  computed: {
+    ...mapWritableState(usePlayerStore, ["useSavedGame", "savedGameOptions"]),
   },
 
   methods: {
@@ -29,7 +35,7 @@ export default defineComponent({
         this.contents += this.typedText[this.row++] + "<br />";
       }
 
-      this.destination.innerHTML =
+      (this.destination as HTMLElement).innerHTML =
         this.contents +
         this.typedText[this.startIndex].substring(0, this.textPos) +
         "_";
@@ -47,8 +53,30 @@ export default defineComponent({
       }
     },
 
-    resumeGame() {
-      console.log("Loading saved game...");
+    startNewGame() {
+      if ("simonePlayerState" in localStorage) {
+        if (!sessionStorage.notifyUserOfSavedGame) {
+          alert(
+            `You have a saved game! Click "Ok" to dismiss this notification and we won't ` +
+              "remind you again for this session."
+          );
+          sessionStorage.setItem("notifyUserOfSavedGame", "true");
+        } else {
+          this.$emit("start-game");
+        }
+      } else {
+        this.$emit("start-game");
+      }
+    },
+
+    resumeSavedGame() {
+      if ("simonePlayerState" in localStorage) {
+        this.useSavedGame = this.savedGameOptions.Yes;
+        this.$emit("start-game");
+      } else {
+        // TODO: Notify user there's no saved game with a custom modal?
+        alert("You currently have no saved game. Please start a new game.");
+      }
     },
   },
 
@@ -63,14 +91,13 @@ export default defineComponent({
 <template>
   <div id="home">
     <h1>Simone</h1>
+    <!-- TODO: Redo typewriter animation with CSS -->
     <p id="typed-text"></p>
     <div class="buttons">
-      <button @click="$emit('start-game')" :to="{ name: 'Game Screen' }">
+      <button @click="startNewGame" :to="{ name: 'Game Screen' }">
         Start New Game
       </button>
-      <button @click="resumeGame">
-        Resume Saved Game<span style="vertical-align: super">coming soon!</span>
-      </button>
+      <button @click="resumeSavedGame">Resume Saved Game</button>
     </div>
   </div>
 </template>
@@ -110,9 +137,6 @@ p {
 
 .buttons {
   margin-top: 6em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 @media screen and (min-width: 650px) {
@@ -120,29 +144,9 @@ p {
     width: 60%;
   }
 
-  .buttons {
-    flex-direction: row;
-    justify-content: center;
-    margin-right: 0;
-  }
-
   .buttons button:first-of-type {
     margin-right: 60px;
   }
-}
-
-.buttons button {
-  padding: 10px;
-  margin-bottom: 20px;
-  color: black;
-  font-size: 1em;
-  font-family: "Audiowide", cursive;
-  border: none;
-  box-shadow: 0px 10px 14px -7px #276873;
-  background: linear-gradient(to bottom, navajowhite 5%, #77a809 100%);
-  border-radius: 10px;
-  cursor: pointer;
-  width: fit-content;
 }
 
 button span {

@@ -69,3 +69,51 @@ Updating player score:
           score will be average of all scores in level
         add new table cell to scoreboard and set score to N/A
     }
+
+After each successful pattern:
+  If 
+
+After a wrong pattern guess:
+  show game over modal
+    Shucks, game over! Processing scores...
+    Your Criminal Coefficient (CC) is 180
+    if CC < 100 { "You're all set! Such a great hue you got there" }
+    if CC > 100 < 300 { "Please stay calm. We are dispatching the closest bureau inspectors
+                    to your address. We'll also have a psychologist along to work with
+                    you to bring your CC down to acceptable range" }
+    if CC > 300 { "Please hold on. We are still processing your scores..." }
+
+    Reporting hues:
+      clear_hue = ["white"]
+      healthy_hues = ["light blue", "pink"]
+      cloudy_hues = ["steel blue", "medium green"]
+      clouded_hue = ["black"]
+
+  Restarting game (w/ "Replay" button)
+    Clear state
+    Reload game screen
+
+    // TODO: Implement this
+    NB(?): Players shouldn't have to start afresh from beginning if they
+     cleared the previous level e.g game-over in level 2 means they can
+     restart at begiining of level 2
+
+  Exiting game (w/ "Exit" button)
+    Clear state
+    Navigate to home screen
+
+Saving game:
+  If user clicks the "Save Game and Exit" button:
+    Save user data to localStorage; they can use the "Resume Saved Game"
+      button to resume saved game  
+
+  If app is reloaded (page refresh) and there is a saved game, notify player
+    e.g, if they click "Start Game" instead of "Resume Saved Game"
+
+
+TODO: 
+  1. add tests
+  2. write three articles (saving and loading app state w/ vue/pinia,
+    javascript weakmap/weakset, )
+
+*/

@@ -1,3 +1,5 @@
+<!-- TODO: readme (link to explanation of criminal coefficient, include tech stack) -->
+
 # Simone
 
 A clone of the memory game, Simon, which requires a player to repeat a series of patterns that get longer as the game progresses
