@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
-    "deploy": "node scripts/gh-pages-deploy.ts",
+    "deploy": "node scripts/gh-pages-deploy.js",
     "preview": "vite preview",
     "test:unit": "vitest --environment jsdom --root src/",
     "build-only": "vite build",
